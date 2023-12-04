@@ -6,6 +6,7 @@ public class Dream
 {
     public int DreamId { get; set; } 
     public string DreamName { get; set; }
+    public string DreamText { get; set; }
     public int DreamerId { get; set; } 
     public Dream(int dreamId, string dreamName, int dreamerId)
     {
@@ -19,4 +20,3 @@ public class Dream
 
     }
 }
-//test

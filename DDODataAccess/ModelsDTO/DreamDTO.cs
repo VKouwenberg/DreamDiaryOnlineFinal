@@ -11,6 +11,9 @@ public class DreamDTO
     [Required]
     [MaxLength(255)]
     public string DreamName { get; set; }
+
+    [Required]
+    public string DreamText { get; set; }
     public int DreamerId { get; set; } //fk
     public DreamerDTO DreamerDTO { get; set; } //nav
 }

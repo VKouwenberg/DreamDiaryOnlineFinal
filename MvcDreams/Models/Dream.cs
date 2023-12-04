@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-//test
+
 namespace MvcDreams.Models
 {
     public class Dream
@@ -17,7 +17,7 @@ namespace MvcDreams.Models
 		[RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
 		[Required]
 		[StringLength(30)]
-		public string? ReadableBy { get; set; } //Genre
+		public string? ReadableBy { get; set; } //Genre //tag
 
 		[RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
 		[Required]
