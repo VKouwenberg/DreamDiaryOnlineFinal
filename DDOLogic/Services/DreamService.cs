@@ -6,17 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
-using LogicDDO.Models;
+using Org.BouncyCastle.Bcpg; //what even is this
 
 namespace LogicDDO.Services;
 
 public class DreamService
 {
+	private readonly List<Dream> _dreamList;
 	private readonly DreamRepo _dreamRepo;
 
 	public DreamService(DreamRepo dreamRepo)
 	{
-		this._dreamRepo = dreamRepo;
+		_dreamList = new List<Dream>();
+		_dreamRepo = dreamRepo;
+		SyncWithDatabase();
+	}
+
+	private void SyncWithDatabase()
+	{
+		_dreamList.Clear();
+		List<Dream> dreams = ConvertDreamDTOsToDreams();
+		_dreamList.AddRange(dreams);
 	}
 
 	private Dream ConvertDTOToDream(DreamDTO dto)
@@ -34,6 +44,8 @@ public class DreamService
 		return dream;
 	}
 
+
+	//Maps DTOs to logic models
 	public List<Dream> ConvertDreamDTOsToDreams()
 	{
 		List<DreamDTO> dreamDTOs = _dreamRepo.GetAllDreams();
@@ -47,5 +59,42 @@ public class DreamService
 		}
 
 		return dreams;
+	}
+
+	//mapping
+	private DreamDTO MapToDTO(Dream dream)
+	{
+		return new DataAccessDDO.ModelsDTO.DreamDTO
+		{
+			DreamId = dream.DreamId,
+			DreamName = dream.DreamName,
+			DreamText = dream.DreamText,
+			ReadableBy = dream.ReadableBy,
+			DreamerId = dream.DreamerId
+		};
+	}
+
+	//CRUD
+	public void CreateDream(Dream dream)
+	{
+		var dreamDTO = MapToDTO(dream);
+		_dreamRepo.CreateDream(dreamDTO);
+	}
+
+	public List<Dream> GetDreams()
+	{
+		var dreamDTOs = ConvertDreamDTOsToDreams();
+		return dreamDTOs;
+	}
+
+	public void UpdateDream(Dream dream)
+	{
+		var dreamDTO = MapToDTO(dream);
+		_dreamRepo.UpdateDream(dreamDTO);
+	}
+
+	public void DeleteDream(int dreamId)
+	{
+		_dreamRepo.DeleteDream(dreamId);
 	}
 }

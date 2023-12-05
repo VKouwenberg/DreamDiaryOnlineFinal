@@ -15,7 +15,7 @@ public class DreamerService
 
 	public DreamerService(DreamerRepo dreamerRepo)
 	{
-		this._dreamerRepo = dreamerRepo;
+		_dreamerRepo = dreamerRepo;
 	}
 
 	private Dreamer ConvertDTOToDreamer(DreamerDTO dto)

@@ -75,18 +75,28 @@ namespace MvcDreams.Controllers
             return dreamViewModels;
         }
 
+        private List<Models.Dream> GetDreamViewModels()
+        {
+			var dreamEntities = _dreamService.ConvertDreamDTOsToDreams();
+			var dreamViewModels = MapToViewModels(dreamEntities);
+            return dreamViewModels;
+		}
+
         [HttpPost] 
         public string Index(string searchString, bool notUsed) //doubt
         {
-            var dreamEntities = _dreamService.ConvertDreamDTOsToDreams(); //pulls logicmodels to here
-            var dreamViewModels = MapToViewModels(dreamEntities);
+            //pulls logicmodels to here
+            var dreamViewModels = GetDreamViewModels();
 
             return "From [HttpPost]Index: filter on " + searchString;
         }
 
         public async Task<IActionResult> Index(string dreamTag, string searchString)
         {
-            if (_context.Dreams == null)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (_context.Dreams == null)
             {
                 return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
             }
@@ -121,7 +131,10 @@ namespace MvcDreams.Controllers
         // GET: Dreams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dream == null)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (id == null || _context.Dream == null)
             {
                 return NotFound();
             }
@@ -149,7 +162,10 @@ namespace MvcDreams.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,UploadDate,ReadableBy")] Dream dream)
         {
-            if (ModelState.IsValid)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (ModelState.IsValid)
             {
                 _context.Add(dream);
                 await _context.SaveChangesAsync();
@@ -161,7 +177,10 @@ namespace MvcDreams.Controllers
         // GET: Dreams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dream == null)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (id == null || _context.Dream == null)
             {
                 return NotFound();
             }
@@ -181,7 +200,10 @@ namespace MvcDreams.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UploadDate,ReadableBy")] Dream dream)
         {
-            if (id != dream.Id)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (id != dream.Id)
             {
                 return NotFound();
             }
@@ -212,7 +234,10 @@ namespace MvcDreams.Controllers
         // GET: Dreams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dream == null)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (id == null || _context.Dream == null)
             {
                 return NotFound();
             }
@@ -232,7 +257,10 @@ namespace MvcDreams.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dream == null)
+			//pulls logicmodels to here
+			var dreamViewModels = GetDreamViewModels();
+
+			if (_context.Dream == null)
             {
                 return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
             }

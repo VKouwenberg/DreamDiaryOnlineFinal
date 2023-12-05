@@ -15,6 +15,8 @@ namespace DataAccessDDO.Repositories
 			_databaseSettings = databaseSettings;
 		}
 
+		
+
 		public void CreateDream(DreamDTO dream)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))

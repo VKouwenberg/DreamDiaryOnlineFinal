@@ -16,7 +16,7 @@ public class DreamerRepo
 
 	public DreamerRepo(DatabaseSettings.DatabaseSettings databaseSettings)
 	{
-		this._databaseSettings = databaseSettings;
+		_databaseSettings = databaseSettings;
 	}
 
 	public void CreateDreamer(DreamerDTO dreamer)
