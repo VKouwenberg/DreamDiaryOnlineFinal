@@ -11,5 +11,5 @@ public class DreamerDTO
     [Required]
     public string DreamerName { get; set; }
 
-    public List<DreamDTO> DreamDTOs { get; set; } //nav
+    public List<DreamDTO> Dreams { get; set; } //nav
 }

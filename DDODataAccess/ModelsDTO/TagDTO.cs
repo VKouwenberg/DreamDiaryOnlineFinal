@@ -18,6 +18,6 @@ namespace DataAccessDDO.ModelsDTO
 
         public int DreamEntryId { get; set; } //fk
 
-        public List<RestDTO> restDTOs { get; set; } //nav
+        public List<RestDTO> rests { get; set; } //nav
     }
 }
