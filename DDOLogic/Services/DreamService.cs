@@ -29,6 +29,35 @@ public class DreamService
 		_dreamList.AddRange(dreams);
 	}
 
+	//This creates logicmodels that are intended to be sent to the view as viewmodels
+	//These only contain the data the view needs.
+	// /It happens to be the same, but that is not always the case.
+	private List<Dream> MapToViewModels(List<Dream> logicDreams)
+	{
+		List<Dream> dreamViewModels = new List<Dream>();
+
+		foreach (var logicDream in logicDreams)
+		{
+			Dream dreamViewModel = new Dream
+			{
+				DreamId = logicDream.DreamId,
+				DreamName = logicDream.DreamName,
+				DreamText = logicDream.DreamText,
+				ReadableBy = logicDream.ReadableBy,
+				DreamerId = logicDream.DreamerId
+			};
+
+			dreamViewModels.Add(dreamViewModel);
+		}
+
+		return dreamViewModels;
+	}
+
+	public List<Dream> GetDreamViewModels()
+	{
+		return MapToViewModels(_dreamList);
+	}
+
 	private Dream ConvertDTOToDream(DreamDTO dto)
 	{
 		//Dreamer dreamer = new Dreamer(dto.DreamerId, dto.DreamerName);
@@ -61,7 +90,7 @@ public class DreamService
 		return dreams;
 	}
 
-	//mapping
+	//maps logic model to DTO
 	private DreamDTO MapToDTO(Dream dream)
 	{
 		return new DataAccessDDO.ModelsDTO.DreamDTO
