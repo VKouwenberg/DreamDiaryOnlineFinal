@@ -12,9 +12,9 @@
 
 <form asp-controller="Dreams" asp-action="Index" method="get">
 	<p>
-		<select asp-for="DreamTag" asp-items="Model.Tags">
+		@* <select asp-for="DreamTag" asp-items="Model.Tags">
 			<option value="">All</option>
-		</select>
+		</select> *@
 
 		Title: <input type="text" asp-for="SearchString" />
 		<input type="submit" value="Filter" />
@@ -28,13 +28,7 @@
 				@Html.DisplayNameFor(model => model.Dreams![0].Name)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Dreams![0].UploadDate)
-			</th>
-			<th>
 				@Html.DisplayNameFor(model => model.Dreams![0].ReadableBy)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Dreams![0].Tag)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Dreams![0].DreamText)
@@ -50,13 +44,7 @@
 					@Html.DisplayFor(modelItem => item.Name)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.UploadDate)
-				</td>
-				<td>
 					@Html.DisplayFor(modelItem => item.ReadableBy)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Tag)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.DreamText)

@@ -15,43 +15,12 @@ namespace MvcDreams.Controllers;
 
 public class DreamsController : Controller
 {
-
-	///old context
-
-	/*private readonly MvcDreamsContext _context;
-
-	public DreamsController(MvcDreamsContext context)
-	{
-		_context = context;
-	}*/
-
-	///Not DbSet context, so wrong? Maybe right after all?
-	/////gotta be a DbSet<>
 	private readonly DreamService _dreamService;
 
 	public DreamsController(DreamService dreamService)
 	{
 		_dreamService = dreamService;
 	}
-
-
-	/*private readonly DataAccessDDOContext _context;
-
-	public DreamsController(DataAccessDDOContext context)
-	{
-		_context = context;
-	}*/
-
-
-	// GET: Dreams
-	/*public async Task<IActionResult> Index()
-	{
-		  return _context.Dream != null ? 
-					  View(await _context.Dream.ToListAsync()) :
-					  Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
-	}*/
-
-
 
 	private List<Models.Dream> MapToViewModels(List<LogicDDO.Models.Dream> dreamEntities)
 	{
@@ -65,8 +34,6 @@ public class DreamsController : Controller
 				Name = dreamEntity.DreamName,
 				ReadableBy = dreamEntity.ReadableBy,
 				DreamText = dreamEntity.DreamText
-
-				//mapping
 			};
 
 			dreamViewModels.Add(dreamViewModel);
@@ -75,11 +42,11 @@ public class DreamsController : Controller
 		return dreamViewModels;
 	}
 
+	//converts DTOs to logic models
+	//converts logic models to view models
 	private List<Models.Dream> GetDreamViewModels()
 	{
-		//converts DTOs to logic models
 		var dreamEntities = _dreamService.ConvertDreamDTOsToDreams();
-		//converts logic models to view models
 		var dreamViewModels = MapToViewModels(dreamEntities);
 		return dreamViewModels;
 	}
@@ -91,26 +58,13 @@ public class DreamsController : Controller
 	}
 
 	public async Task<IActionResult> Index(string searchString)
-		///temporarily disabled before I make it work with Tags
-	//public async Task<IActionResult> Index(string dreamTag, string searchString)
 	{
-		//pulls logicmodels to here
 		var dreamViewModels = GetDreamViewModels();
 
-		if (_context.Dreams == null)
+		if (dreamViewModels == null)
 		{
 			return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
 		}
-
-
-		///This filters by tag. Not now
-		///
-		/*// Use LINQ to get list of genres.
-		IQueryable<string> tagQuery = from m in _context.Dream
-									  orderby m.Tag
-									  select m.Tag;
-		var dreams = from m in _context.Dream
-					 select m;*/
 
 		if (!string.IsNullOrEmpty(searchString))
 		{
@@ -164,7 +118,7 @@ public class DreamsController : Controller
 	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Create([Bind("Id,Name,UploadDate,ReadableBy")] Dream dream)
+	public async Task<IActionResult> Create([Bind("Id,Name,UploadDate,ReadableBy")] Models.Dream dream)
 	{
 		//pulls logicmodels to here
 		var dreamViewModels = GetDreamViewModels();
@@ -202,7 +156,7 @@ public class DreamsController : Controller
 	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UploadDate,ReadableBy")] Dream dream)
+	public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UploadDate,ReadableBy")] Models.Dream dream)
 	{
 		//pulls logicmodels to here
 		var dreamViewModels = GetDreamViewModels();
