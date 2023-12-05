@@ -2,30 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LogicDDO.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcDreams.Data;
 using MvcDreams.Models;
+using LogicDDO.Models;
+using DataAccessDDO.ModelsDTO;
 
 namespace MvcDreams.Controllers
 {
     public class DreamsController : Controller
     {
-        private readonly MvcDreamsContext _context;
+
+        ///old context
+
+        /*private readonly MvcDreamsContext _context;
 
         public DreamsController(MvcDreamsContext context)
         {
             _context = context;
+        }*/
+
+        ///Not DbSet context, so wrong?
+        /*private readonly DreamService _dreamService;
+
+        public DreamsController(DreamService dreamService)
+        {
+            _dreamService = dreamService;
+        }*/
+
+
+        private readonly DataAccessDDOContext _context;
+
+        public DreamsController(DataAccessDDOContext context)
+        {
+            _context = context;
         }
 
-        // GET: Dreams
-        /*public async Task<IActionResult> Index()
+
+		// GET: Dreams
+		/*public async Task<IActionResult> Index()
         {
               return _context.Dream != null ? 
                           View(await _context.Dream.ToListAsync()) :
                           Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
         }*/
+
+
+
+		private List<Models.Dream> MapToViewModels(List<LogicDDO.Models.Dream> dreamEntities)
+        {
+            var dreamViewModels = new List<Models.Dream>();
+
+            foreach (var dreamEntity in dreamEntities)
+            {
+                var dreamViewModel = new Models.Dream
+                {
+                    Id = dreamEntity.DreamId,
+                    Name = dreamEntity.DreamName,
+                    ReadableBy = dreamEntity.ReadableBy,
+                    DreamText = dreamEntity.DreamText
+                    
+                    //mapping
+                };
+
+                dreamViewModels.Add(dreamViewModel);
+            }
+
+            return dreamViewModels;
+        }
+
         [HttpPost] 
         public string Index(string searchString, bool notUsed) //doubt
         {
@@ -34,7 +82,7 @@ namespace MvcDreams.Controllers
 
         public async Task<IActionResult> Index(string dreamTag, string searchString)
         {
-            if (_context.Dream == null)
+            if (_context.Dreams == null)
             {
                 return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
             }

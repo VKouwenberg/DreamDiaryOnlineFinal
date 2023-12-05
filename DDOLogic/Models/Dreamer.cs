@@ -1,5 +1,5 @@
 ﻿using DataAccessDDO.ModelsDTO;
-using DDOLogic.Models;
+using LogicDDO.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -14,6 +14,10 @@ public class DreamDTO
 
     [Required]
     public string DreamText { get; set; }
+
+    [Required]
+    public string ReadableBy { get; set; }
+
     public int DreamerId { get; set; } //fk
     public DreamerDTO DreamerDTO { get; set; } //nav
 }

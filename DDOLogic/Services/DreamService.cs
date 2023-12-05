@@ -1,4 +1,4 @@
-﻿using DDOLogic.Models;
+﻿using LogicDDO.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,9 @@ public class DreamService
 		{
 			DreamerId = dto.DreamerId,
 			DreamName = dto.DreamName,
-			DreamId = dto.DreamId,
+			DreamText = dto.DreamText,
+			ReadableBy = dto.ReadableBy,
+			DreamId = dto.DreamId
 		};
 
 		return dream;

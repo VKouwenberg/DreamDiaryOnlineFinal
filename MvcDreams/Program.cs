@@ -1,3 +1,4 @@
+using DataAccessDDO.ModelsDTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcDreams.Data;
@@ -6,9 +7,17 @@ using MvcMovie.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//context
-builder.Services.AddDbContext<MvcDreamsContext>(options =>
+//dbcontext for MvcDreams
+/*builder.Services.AddDbContext<MvcDreamsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MvcDreamsContext") ?? throw new InvalidOperationException("Connection string 'MvcDreamsContext' not found.")));
+*/
+
+//Mvc data context begone!
+
+
+//dbcontext for DataAccessDDO
+builder.Services.AddDbContext<DataAccessDDOContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DataAccessDDOContext") ?? throw new InvalidOperationException("Connection string 'DataAccessDDOContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
