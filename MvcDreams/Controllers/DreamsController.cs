@@ -25,25 +25,26 @@ namespace MvcDreams.Controllers
             _context = context;
         }*/
 
-        ///Not DbSet context, so wrong?
-        /*private readonly DreamService _dreamService;
+        ///Not DbSet context, so wrong? Maybe right after all?
+        /////gotta be a DbSet<>
+        private readonly DreamService _dreamService;
 
         public DreamsController(DreamService dreamService)
         {
             _dreamService = dreamService;
-        }*/
+        }
 
 
-        private readonly DataAccessDDOContext _context;
+        /*private readonly DataAccessDDOContext _context;
 
         public DreamsController(DataAccessDDOContext context)
         {
             _context = context;
-        }
+        }*/
 
 
-		// GET: Dreams
-		/*public async Task<IActionResult> Index()
+        // GET: Dreams
+        /*public async Task<IActionResult> Index()
         {
               return _context.Dream != null ? 
                           View(await _context.Dream.ToListAsync()) :
@@ -52,7 +53,7 @@ namespace MvcDreams.Controllers
 
 
 
-		private List<Models.Dream> MapToViewModels(List<LogicDDO.Models.Dream> dreamEntities)
+        private List<Models.Dream> MapToViewModels(List<LogicDDO.Models.Dream> dreamEntities)
         {
             var dreamViewModels = new List<Models.Dream>();
 
@@ -77,6 +78,9 @@ namespace MvcDreams.Controllers
         [HttpPost] 
         public string Index(string searchString, bool notUsed) //doubt
         {
+            var dreamEntities = _dreamService.ConvertDreamDTOsToDreams(); //pulls logicmodels to here
+            var dreamViewModels = MapToViewModels(dreamEntities);
+
             return "From [HttpPost]Index: filter on " + searchString;
         }
 
