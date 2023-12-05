@@ -10,18 +10,23 @@ using MvcDreams.Data;
 using MvcDreams.Models;
 using LogicDDO.Models;
 using DataAccessDDO.ModelsDTO;
-using MvcDreams.Models; // Ensure this namespace is included
-using MvcDreams; // Include your DreamService namespace
 
 namespace MvcDreams.Controllers;
 
 public class DreamsController : Controller
 {
-	private readonly DreamService _dreamService;
+	//private readonly DreamService _dreamService;
 
-	public DreamsController(DreamService dreamService)
+	/*public DreamsController(DreamService dreamService)
 	{
 		_dreamService = dreamService;
+	}*/
+
+	private readonly MvcDreamsContext _context;
+
+	public DreamsController(MvcDreamsContext mvcDreamsContext)
+	{
+		_context = mvcDreamsContext;
 	}
 
 	private List<Models.Dream> MapToViewModels(List<LogicDDO.Models.Dream> dreamEntities)
@@ -46,54 +51,172 @@ public class DreamsController : Controller
 
 	//converts DTOs to logic models
 	//converts logic models to view models
-	private List<Models.Dream> GetDreamViewModels()
+	/*private List<Models.Dream> GetDreamViewModels()
 	{
 		var dreamEntities = _dreamService.ConvertDreamDTOsToDreams();
 		var dreamViewModels = MapToViewModels(dreamEntities);
 		return dreamViewModels;
+	}*/
+
+	[HttpPost]
+	public string Index(string searchString, bool notUsed) //doubt
+	{
+		return "From [HttpPost]Index: filter on " + searchString;
 	}
 
-	[HttpGet]
 	public async Task<IActionResult> Index(string searchString)
 	{
-		var dreamViewModels = await GetFilteredDreamViewModelsAsync(searchString);
-
-		return View(dreamViewModels);
-	}
-
-	private async Task<List<DreamViewModel>> GetFilteredDreamViewModelsAsync(string searchString)
-	{
-		var dreamEntities = await _dreamService.ConvertDreamDTOsToDreamsAsync();
-		var dreamViewModels = MapToViewModels(dreamEntities);
+		if (_context.Dream == null)
+		{
+			return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
+		}
 
 		if (!string.IsNullOrEmpty(searchString))
 		{
-			dreamViewModels = dreamViewModels
-				.Where(d => d.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-				.ToList();
+			dreams = dreams.Where(s => s.Name!.Contains(searchString));
 		}
 
-		return dreamViewModels;
+		var dreamTagVM = new DreamTagViewModel
+		{
+			Tags = new SelectList(await tagQuery.Distinct().ToListAsync()),
+			Dreams = await dreams.ToListAsync()
+		};
+
+		return View(dreamTagVM);
 	}
 
-	private List<DreamViewModel> MapToViewModels(List<Dream> dreamEntities)
+
+	// GET: Dreams/Details/5
+	public async Task<IActionResult> Details(int? id)
 	{
-		var dreamViewModels = new List<DreamViewModel>();
-
-		foreach (var dreamEntity in dreamEntities)
+		if (id == null || _context.Dream == null)
 		{
-			var dreamViewModel = new DreamViewModel
-			{
-				Id = dreamEntity.DreamId,
-				Name = dreamEntity.DreamName,
-				ReadableBy = dreamEntity.ReadableBy,
-				DreamText = dreamEntity.DreamText
-			};
-
-			dreamViewModels.Add(dreamViewModel);
+			return NotFound();
 		}
 
-		return dreamViewModels;
+		var dream = await _context.Dream
+			.FirstOrDefaultAsync(m => m.Id == id);
+		if (dream == null)
+		{
+			return NotFound();
+		}
+
+		return View(dream);
+	}
+
+	// GET: Dreams/Create
+	public IActionResult Create()
+	{
+		return View();
+	}
+
+	// POST: Dreams/Create
+	// To protect from overposting attacks, enable the specific properties you want to bind to.
+	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Create([Bind("Id,Name,UploadDate,ReadableBy")] Models.Dream dream)
+	{
+		if (ModelState.IsValid)
+		{
+			_context.Add(dream);
+			await _context.SaveChangesAsync();
+			return RedirectToAction(nameof(Index));
+		}
+		return View(dream);
+	}
+
+	// GET: Dreams/Edit/5
+	public async Task<IActionResult> Edit(int? id)
+	{
+		if (id == null || _context.Dream == null)
+		{
+			return NotFound();
+		}
+
+		var dream = await _context.Dream.FindAsync(id);
+		if (dream == null)
+		{
+			return NotFound();
+		}
+		return View(dream);
+	}
+
+	// POST: Dreams/Edit/5
+	// To protect from overposting attacks, enable the specific properties you want to bind to.
+	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UploadDate,ReadableBy")] Models.Dream dream)
+	{
+		if (id != dream.Id)
+		{
+			return NotFound();
+		}
+
+		if (ModelState.IsValid)
+		{
+			try
+			{
+				_context.Update(dream);
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!DreamExists(dream.Id))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+			return RedirectToAction(nameof(Index));
+		}
+		return View(dream);
+	}
+
+	// GET: Dreams/Delete/5
+	public async Task<IActionResult> Delete(int? id)
+	{
+		if (id == null || _context.Dream == null)
+		{
+			return NotFound();
+		}
+
+		var dream = await _context.Dream
+			.FirstOrDefaultAsync(m => m.Id == id);
+		if (dream == null)
+		{
+			return NotFound();
+		}
+
+		return View(dream);
+	}
+
+	// POST: Dreams/Delete/5
+	[HttpPost, ActionName("Delete")]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> DeleteConfirmed(int id)
+	{
+		if (_context.Dream == null)
+		{
+			return Problem("Entity set 'MvcDreamsContext.Dream'  is null.");
+		}
+		var dream = await _context.Dream.FindAsync(id);
+		if (dream != null)
+		{
+			_context.Dream.Remove(dream);
+		}
+
+		await _context.SaveChangesAsync();
+		return RedirectToAction(nameof(Index));
+	}
+
+	private bool DreamExists(int id)
+	{
+		return (_context.Dream?.Any(e => e.Id == id)).GetValueOrDefault();
 	}
 }
 
