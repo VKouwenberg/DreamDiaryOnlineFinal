@@ -8,25 +8,30 @@ using Microsoft.EntityFrameworkCore;
 using RazorPagesDream.Data;
 using RazorPagesDream.ViewModels;
 
-namespace RazorPagesDream.Pages.DreamVMs
+using LogicDDO.Services;
+
+namespace RazorPagesDream.Pages.DreamVMs;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+
+    private readonly LogicDDO.Services.DreamService _context;
+
+    public IndexModel(LogicDDO.Services.DreamService context)
     {
-        private readonly RazorPagesDream.Data.RazorPagesDreamContext _context;
+        _context = context;
+    }
 
-        public IndexModel(RazorPagesDream.Data.RazorPagesDreamContext context)
+    public IList<DreamVM> DreamVM { get; set; } = default!;
+
+    public List<>
+
+    public async Task OnGetAsync()
+    {
+        if (_context.DreamVM != null)
         {
-            _context = context;
-        }
-
-        public IList<DreamVM> DreamVM { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            if (_context.DreamVM != null)
-            {
-                DreamVM = await _context.DreamVM.ToListAsync();
-            }
+            DreamVM = await _context.DreamVM.ToListAsync();
         }
     }
 }
+

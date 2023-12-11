@@ -8,5 +8,6 @@ namespace RazorPagesDream.ViewModels
         public string DreamName { get; set; }
         public string DreamText { get; set; }
         public string ReadableBy { get; set; }
+        public int DreamerId { get; set; }
     }
 }

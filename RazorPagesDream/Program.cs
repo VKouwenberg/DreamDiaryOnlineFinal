@@ -14,6 +14,7 @@ builder.Services.AddTransient<MySqlConnection>(_ =>
     new MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

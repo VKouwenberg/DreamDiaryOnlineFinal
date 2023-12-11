@@ -12,22 +12,24 @@ namespace LogicDDO.Services;
 
 public class DreamService
 {
-	private readonly List<Dream> _dreamList;
+	//private readonly List<Dream> _dreamList;
 	private readonly DreamRepo _dreamRepo;
 
 	public DreamService(DreamRepo dreamRepo)
 	{
-		_dreamList = new List<Dream>();
+		//_dreamList = new List<Dream>();
 		_dreamRepo = dreamRepo;
-		SyncWithDatabase();
+		//SyncWithDatabase();
 	}
 
-	private void SyncWithDatabase()
+	/*private void SyncWithDatabase()
 	{
 		_dreamList.Clear();
 		List<Dream> dreams = ConvertDreamDTOsToDreams();
 		_dreamList.AddRange(dreams);
-	}
+	}*/
+
+
 
 	//This creates logicmodels that are intended to be sent to the view as viewmodels
 	//These only contain the data the view needs.
@@ -53,10 +55,10 @@ public class DreamService
 		return dreamViewModels;
 	}
 
-	public List<Dream> GetDreamViewModels()
+	/*public List<Dream> GetDreamViewModels()
 	{
 		return MapToViewModels(_dreamList);
-	}
+	}*/
 
 	private Dream ConvertDTOToDream(DreamDTO dto)
 	{

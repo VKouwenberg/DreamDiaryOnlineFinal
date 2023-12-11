@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
-using DDOLogic.Models;
 using LogicDDO.Models;
 
 namespace LogicDDO.Services;
