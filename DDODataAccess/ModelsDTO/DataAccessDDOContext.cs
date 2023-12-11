@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
+//not relevant code. This is for entityframework. I we'll be using MySql and raw sql queries
 namespace DataAccessDDO.ModelsDTO
 {
 	public class DataAccessDDOContext : DbContext

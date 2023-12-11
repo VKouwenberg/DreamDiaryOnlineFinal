@@ -14,18 +14,19 @@ namespace MvcDreams.Models
         [DataType(DataType.Date)]
         public DateTime UploadDate { get; set; } //ReleaseDate
 
-		[RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+        [Display(Name = "Readable by")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
 		[Required]
 		[StringLength(30)]
 		public string? ReadableBy { get; set; } //Genre //tag
 
 		[RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
-		[Required]
+        [Required]
 		[StringLength(30)]
 		public string? Tag { get; set; }
-		//public decimal Price { get; set; }
+        //public decimal Price { get; set; }
 
-		[RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+        [Display(Name = "Dream")]
 		[Required]
 		public string? DreamText { get; set; }
 	}
