@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using RazorPagesDream.Data;
 using RazorPagesDream.ViewModels;
+using RazorPagesDream.AppService;
 
 using LogicDDO.Services;
 
@@ -14,17 +14,22 @@ namespace RazorPagesDream.Pages.DreamVMs;
 
 public class IndexModel : PageModel
 {
+    private readonly DreamVMService _dreamVMService;
 
-    private readonly LogicDDO.Services.DreamService _context;
-
-    public IndexModel(LogicDDO.Services.DreamService context)
+    public IndexModel(DreamVMService context)
     {
-        _context = context;
+        _dreamVMService = context;
     }
 
-    public IList<DreamVM> DreamVM { get; set; } = default!;
+    public List<DreamVM> Dreams { get; set; }
 
-    public List<>
+    public void OnGet()
+    {
+        Dreams = _dreamVMService.GetDreams();
+    }
+
+
+    /*public IList<DreamVM> DreamVM { get; set; } = default!;
 
     public async Task OnGetAsync()
     {
@@ -32,6 +37,6 @@ public class IndexModel : PageModel
         {
             DreamVM = await _context.DreamVM.ToListAsync();
         }
-    }
+    }*/
 }
 

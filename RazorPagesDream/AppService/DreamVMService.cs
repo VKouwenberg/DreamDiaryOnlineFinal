@@ -1,7 +1,6 @@
 ﻿using LogicDDO.Services;
 using RazorPagesDream.ViewModels;
 using LogicDDO.Models;
-using DataAccessDDO.ModelsDTO;
 
 namespace RazorPagesDream.AppService;
 
@@ -16,7 +15,6 @@ public class DreamVMService
 
     private DreamVM ConvertLogicDreamtoDreamVM(Dream dream)
     {
-        //Dreamer dreamer = new Dreamer(dto.DreamerId, dto.DreamerName);
         DreamVM dreamVM = new DreamVM
         {
             Id = dream.DreamerId,
