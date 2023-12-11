@@ -1,12 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using RazorPagesDream.Data;
+using MySql.Data.MySqlClient;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<RazorPagesDreamContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RazorPagesDreamContext") ?? throw new InvalidOperationException("Connection string 'RazorPagesDreamContext' not found.")));
+
+// Configure the database connection
+builder.Services.AddTransient<MySqlConnection>(_ =>
+    new MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
 
