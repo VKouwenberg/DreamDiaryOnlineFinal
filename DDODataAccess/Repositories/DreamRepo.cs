@@ -99,7 +99,8 @@ namespace DataAccessDDO.Repositories
 
 		public List<DreamDTO> GetAllDreams()
 		{
-			Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
+            Console.WriteLine("This is the string in DreamRepo");
+            Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
 
 			List<DreamDTO> dreams = new List<DreamDTO>();
 

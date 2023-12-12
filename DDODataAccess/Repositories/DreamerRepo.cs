@@ -21,7 +21,7 @@ public class DreamerRepo
 
 	public void CreateDreamer(DreamerDTO dreamer)
 	{
-		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 		{
 			connection.Open();
 			string query = "INSERT INTO Dreamer (DreamerName) VALUES (@DreamerName)";
@@ -35,7 +35,7 @@ public class DreamerRepo
 
 	public DreamerDTO ReadDreamer(int dreamerId)
 	{
-		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 		{
 			connection.Open();
 			string query = "SELECT * FROM Dreamer WHERE DreamerId = @DreamerId";
@@ -60,7 +60,7 @@ public class DreamerRepo
 
 	public void UpdateDreamer(DreamerDTO dto)
 	{
-		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 		{
 			connection.Open();
 			string query = "UPDATE Dreamer SET DreamerName = @DreamerName WHERE DreamerId = @DreamerId";
@@ -75,7 +75,7 @@ public class DreamerRepo
 
 	public void DeleteDreamer(int dreamerId)
 	{
-		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 		{
 			connection.Open();
 			string query = "DELETE FROM Dreamer WHERE DreamerId = @DreamerId = @DreamerId";
@@ -91,7 +91,7 @@ public class DreamerRepo
 	{
 		List<DreamerDTO> dreamers = new List<DreamerDTO>();
 
-		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+		using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 		{
 			connection.Open();
 			string query = "SELECT * FROM Dreamer";
