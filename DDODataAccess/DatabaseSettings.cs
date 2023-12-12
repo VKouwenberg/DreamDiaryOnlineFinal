@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,5 @@ namespace DataAccessDDO.DatabaseSettings;
 
 public class DatabaseSettings
 {
-    public string ConnectionString { get; }
-    public DatabaseSettings() 
-    {
-        ConnectionString = "SERVER=localhost;DATABASE=ddodb;UID=root;";
-	}
+    public string DefaultConnection { get; set; }
 }

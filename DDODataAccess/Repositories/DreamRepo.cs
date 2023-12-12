@@ -1,5 +1,6 @@
 ﻿using DataAccessDDO.DatabaseSettings;
 using DataAccessDDO.ModelsDTO;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,16 @@ namespace DataAccessDDO.Repositories
 	{
 		private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
 
-		public DreamRepo(DatabaseSettings.DatabaseSettings databaseSettings)
+		public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings)
 		{
-			_databaseSettings = databaseSettings;
+			_databaseSettings = databaseSettings.Value;
 		}
 
 
 
 		public void CreateDream(DreamDTO dream)
 		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 
@@ -39,7 +40,7 @@ namespace DataAccessDDO.Repositories
 
 		public DreamDTO ReadDream(int dreamId)
 		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 				string query = "SELECT * FROM Dream WHERE DreamId = @DreamId";
@@ -67,7 +68,7 @@ namespace DataAccessDDO.Repositories
 
 		public void UpdateDream(DreamDTO dto)
 		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 				string query = "UPDATE Dream SET DreamName = @DreamName, DreamText = @DreamText WHERE DreamId = @DreamId";
@@ -84,7 +85,7 @@ namespace DataAccessDDO.Repositories
 
 		public void DeleteDream(int dreamId)
 		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 				string query = "DELETE FROM Dream WHERE DreamId = @DreamId";
@@ -98,9 +99,11 @@ namespace DataAccessDDO.Repositories
 
 		public List<DreamDTO> GetAllDreams()
 		{
+			Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
+
 			List<DreamDTO> dreams = new List<DreamDTO>();
 
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 				string query = "SELECT * FROM Dream";
@@ -130,7 +133,7 @@ namespace DataAccessDDO.Repositories
 		}
 		public void CreateDreamForDreamer(DreamDTO dream, DreamerDTO dreamer)
 		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 
@@ -152,7 +155,7 @@ namespace DataAccessDDO.Repositories
 		{
 			List<DreamDTO> dreams = new List<DreamDTO>();
 
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString))
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
 			{
 				connection.Open();
 
@@ -188,7 +191,7 @@ namespace DataAccessDDO.Repositories
 		{
 			List<DreamDTO> dreams = new List<DreamDTO>();
 
-			using MySqlConnection connection = new MySqlConnection(_databaseSettings.ConnectionString);
+			using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 			connection.Open();
 
 			string query = "SELECT * FROM Dream WHERE DreamerId = @DreamerId";
