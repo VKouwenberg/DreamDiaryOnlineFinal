@@ -3,6 +3,7 @@ using DataAccessDDO.ModelsDTO;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace DataAccessDDO.Repositories;
@@ -18,7 +19,7 @@ public class DreamRepo
 
 
 
-    public void CreateDream(DreamDTO dream)
+    public void CreateDream(DreamDTO dto)
     {
         using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
         {
@@ -28,9 +29,9 @@ public class DreamRepo
 
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@DreamName", dream.DreamName);
-                command.Parameters.AddWithValue("@DreamText", dream.DreamText);
-                command.Parameters.AddWithValue("@ReadableBy", dream.ReadableBy);
+                command.Parameters.AddWithValue("@DreamName", dto.DreamName);
+                command.Parameters.AddWithValue("@DreamText", dto.DreamText);
+                command.Parameters.AddWithValue("@ReadableBy", dto.ReadableBy);
 
                 command.ExecuteNonQuery();
             }
@@ -70,7 +71,119 @@ public class DreamRepo
         }
     }
 
+    
+
     public List<DreamDTO> GetAllDreams()
+    {
+        Console.WriteLine("This is the string in DreamRepo");
+        Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
+
+
+        List<DreamDTO> dreams = new List<DreamDTO>();
+
+        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        connection.Open();
+
+        string query = @"SELECT " +
+            "dream.DreamId, " +
+            "dream.DreamName, " +
+            "dream.DreamText, " +
+            "dream.ReadableBy, " +
+            "tag.TagId, " +
+            "tag.TagName " +
+            "FROM dream " +
+            "LEFT JOIN rest ON dream.DreamId = rest.DreamId " +
+            "LEFT JOIN tag ON rest.TagId = tag.TagId";
+
+        MySqlCommand command = new MySqlCommand(query, connection);
+        MySqlDataReader reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            DreamDTO dto = dreams.FirstOrDefault(d => d.DreamId == Convert.ToInt32(reader["DreamId"]));
+
+            if (dto == null)
+            {
+                dto = new DreamDTO
+                {
+                    DreamId = Convert.ToInt32(reader["DreamId"]),
+                    DreamName = reader["DreamName"].ToString(),
+                    DreamText = reader["DreamText"].ToString(),
+                    ReadableBy = reader["ReadableBy"].ToString(),
+                    Tags = new List<TagDTO>()
+                };
+
+                dreams.Add(dto);
+            }
+
+            if (reader["TagId"] != DBNull.Value)
+            {
+                dto.Tags.Add(new TagDTO
+                {
+                    TagId = Convert.ToInt32(reader["TagId"]),
+                    TagName = reader["TagName"].ToString()
+                });
+            }
+        }
+        connection.Close();
+
+        return dreams;
+    }
+
+    public DreamDTO GetDream(int dreamId)
+    {
+			DreamDTO dto = null;
+
+        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        connection.Open();
+
+        string query = @"SELECT "+
+            "dream.DreamId, " +
+            "dream.DreamName, " +
+            "dream.DreamText, " +
+            "dream.ReadableBy, " +
+				"tag.TagId, " +
+				"tag.TagName " +
+				"FROM dream " +
+				"JOIN rest ON dream.DreamId = rest.DreamId " +
+				"JOIN tag ON rest.TagId = tag.TagId " +
+				"WHERE dream.DreamId = @DreamId";
+
+        MySqlCommand command = new MySqlCommand(query, connection);
+			command.Parameters.AddWithValue("@DreamId", dreamId);
+        MySqlDataReader reader = command.ExecuteReader();
+
+			while (reader.Read())
+			{
+				if (dto == null)
+				{
+                dto = new DreamDTO
+                {
+                    DreamId = Convert.ToInt32(reader["DreamId"]),
+                    DreamName = reader["DreamName"].ToString(),
+                    DreamText = reader["DreamText"].ToString(),
+                    ReadableBy = reader["ReadableBy"].ToString(),
+                    Tags = new List<TagDTO>()
+                };
+            }
+
+            if (reader["TagId"] != DBNull.Value)
+            {
+                dto.Tags.Add(new TagDTO
+                {
+                    TagId = Convert.ToInt32(reader["TagId"]),
+                    TagName = reader["TagName"].ToString()
+                });
+            }
+
+
+        }
+			connection.Close();
+
+			return dto;
+    }
+
+    /*public List<DreamDTO> GetAllDreams()
     {
         Console.WriteLine("This is the string in DreamRepo");
         Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
@@ -100,115 +213,7 @@ public class DreamRepo
 
 			connection.Close();
         return dreams;
-    }
-
-    public List<DreamDTO> GetAllDreamsWithTags()
-    {
-        List<DreamDTO> dreams = new List<DreamDTO>();
-
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
-
-        string query = @"SELECT " +
-            "dream.DreamId, " +
-            "dream.DreamName, " +
-            "dream.DreamText, " +
-            "dream.ReadableBy, " +
-            "tag.TagId, " +
-            "tag.TagName " +
-            "FROM dream " +
-            "LEFT JOIN rest ON dream.DreamId = rest.DreamId " +
-            "LEFT JOIN tag ON rest.TagId = tag.TagId";
-
-        MySqlCommand command = new MySqlCommand(query, connection);
-        MySqlDataReader reader = command.ExecuteReader();
-
-        while (reader.Read())//
-        {
-            DreamDTO dream = dreams.FirstOrDefault(d => d.DreamId == Convert.ToInt32(reader["DreamId"]));
-
-            if (dream == null)
-            {
-                dream = new DreamDTO
-                {
-                    DreamId = Convert.ToInt32(reader["DreamId"]),
-                    DreamName = reader["DreamName"].ToString(),
-                    DreamText = reader["DreamText"].ToString(),
-                    ReadableBy = reader["ReadableBy"].ToString(),
-                    Tags = new List<TagDTO>()
-                };
-
-                dreams.Add(dream);
-            }
-
-            if (reader["TagId"] != DBNull.Value)
-            {
-                dream.Tags.Add(new TagDTO
-                {
-                    TagId = Convert.ToInt32(reader["TagId"]),
-                    TagName = reader["TagName"].ToString()
-                });
-            }
-        }
-        connection.Close();
-
-        return dreams;
-    }
-
-    public DreamDTO GetDream(int dreamId)
-    {
-			DreamDTO dream = null;
-
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
-
-        string query = @"SELECT "+
-            "dream.DreamId, " +
-            "dream.DreamName, " +
-            "dream.DreamText, " +
-            "dream.ReadableBy, " +
-				"tag.TagId, " +
-				"tag.TagName " +
-				"FROM dream " +
-				"JOIN rest ON dream.DreamId = rest.DreamId " +
-				"JOIN tag ON rest.TagId = tag.TagId " +
-				"WHERE dream.DreamId = @DreamId";
-
-        MySqlCommand command = new MySqlCommand(query, connection);
-			command.Parameters.AddWithValue("@DreamId", dreamId);
-        MySqlDataReader reader = command.ExecuteReader();
-
-			while (reader.Read())
-			{
-				if (dream == null)
-				{
-                dream = new DreamDTO
-                {
-                    DreamId = Convert.ToInt32(reader["DreamId"]),
-                    DreamName = reader["DreamName"].ToString(),
-                    DreamText = reader["DreamText"].ToString(),
-                    ReadableBy = reader["ReadableBy"].ToString(),
-                    Tags = new List<TagDTO>()
-                };
-            }
-
-            if (reader["TagId"] != DBNull.Value)
-            {
-                dream.Tags.Add(new TagDTO
-                {
-                    TagId = Convert.ToInt32(reader["TagId"]),
-                    TagName = reader["TagName"].ToString()
-                });
-            }
-
-
-        }
-			connection.Close();
-
-			return dream;
-    }
-
-
+    }*/
 
 
     /*public void CreateDreamForDreamer(DreamDTO dream, DreamerDTO dreamer)

@@ -5,11 +5,41 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
+using LogicDDO.Models;
 
-namespace LogicDDO.Services
+namespace LogicDDO.Services;
+
+public class TagService
 {
-	public class TagService
+    private readonly TagRepo _tagRepo;
+
+    public TagService(TagRepo tagRepo)
     {
-        //Dog
+        _tagRepo = tagRepo;
+    }
+
+    public Tag MapTagDTOToTag(TagDTO dto)
+    {
+        Tag tag = new Tag
+        {
+            TagId = dto.TagId,
+            TagName = dto.TagName,
+            RestId = dto.RestId
+        };
+
+        return tag;
+    }
+
+    public List<Tag> MapTagDTOsToTags(List<TagDTO> dTOs)
+    {
+        List<Tag> tags = new List<Tag>();
+
+        foreach (TagDTO dto in dTOs)
+        {
+            Tag tag = MapTagDTOToTag(dto);
+            tags.Add(tag);
+        }
+
+        return tags;
     }
 }

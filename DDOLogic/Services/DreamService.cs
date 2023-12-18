@@ -14,41 +14,24 @@ public class DreamService
 {
 	//private readonly List<Dream> _dreamList;
 	private readonly DreamRepo _dreamRepo;
+	private readonly TagService _tagService;
 
-	public DreamService(DreamRepo dreamRepo)
+	public DreamService(DreamRepo dreamRepo, TagService tagService)
 	{
 		_dreamRepo = dreamRepo;
+		_tagService = tagService;
 	}
 
-	//This creates logicmodels that are intended to be sent to the view as viewmodels
-	//These only contain the data the view needs.
-	// /It happens to be the same, but that is not always the case.
-	/*private List<Dream> MapToViewModels(List<Dream> logicDreams)
+	//Calls private mapping method that converts DTOs to logic models
+	//The mapping method is private because otherwise I'd have to link the DAL to the view
+	//Now you can Get Dreams without having to pass on a list
+	public List<Dream> GetDreams()
 	{
-		List<Dream> dreamViewModels = new List<Dream>();
+		List<Dream> dreams = MapDreamDTOsToDreams(_dreamRepo.GetAllDreams());
+		return dreams;
+	}
 
-		foreach (var logicDream in logicDreams)
-		{
-			Dream dreamViewModel = new Dream
-			{
-				DreamId = logicDream.DreamId,
-				DreamName = logicDream.DreamName,
-				DreamText = logicDream.DreamText,
-				ReadableBy = logicDream.ReadableBy
-			};
-
-			dreamViewModels.Add(dreamViewModel);
-		}
-
-		return dreamViewModels;
-	}*/
-
-	/*public List<Dream> GetDreamViewModels()
-	{
-		return MapToViewModels(_dreamList);
-	}*/
-
-	private Dream ConvertDTOToDream(DreamDTO dto)
+	private Dream MapDreamDTOToDream(DreamDTO dto)
 	{
 		//Dreamer dreamer = new Dreamer(dto.DreamerId, dto.DreamerName);
 		Dream dream = new Dream
@@ -58,21 +41,25 @@ public class DreamService
 			ReadableBy = dto.ReadableBy,
 			DreamId = dto.DreamId
 		};
+		if (dto.Tags != null)
+		{
+			List<Tag> tags = _tagService.MapTagDTOsToTags(dto.Tags);
+		}
 
 		return dream;
 	}
 
 
 	//Maps DTOs to logic models
-	public List<Dream> ConvertDreamDTOsToDreams()
-	{
+	private List<Dream> MapDreamDTOsToDreams(List<DreamDTO> dTOs)
+	{/*
 		List<DreamDTO> dreamDTOs = _dreamRepo.GetAllDreams();
-
+*/
 		List<Dream> dreams = new List<Dream>();
 
-		foreach (DreamDTO dto in dreamDTOs)
+		foreach (DreamDTO dto in dTOs)
 		{
-			Dream dream = ConvertDTOToDream(dto);
+			Dream dream = MapDreamDTOToDream(dto);
 			dreams.Add(dream);
 		}
 
@@ -98,12 +85,6 @@ public class DreamService
 		_dreamRepo.CreateDream(dreamDTO);
 	}
 
-	public List<Dream> GetDreams()
-	{
-		List<Dream> dreams = ConvertDreamDTOsToDreams();
-		return dreams;
-	}
-
 	public void UpdateDream(Dream dream)
 	{
 		var dreamDTO = MapToDTO(dream);
@@ -114,6 +95,33 @@ public class DreamService
 	{
 		_dreamRepo.DeleteDream(dreamId);
 	}
+    //This creates logicmodels that are intended to be sent to the view as viewmodels
+    //These only contain the data the view needs.
+    // /It happens to be the same, but that is not always the case.
+    /*private List<Dream> MapToViewModels(List<Dream> logicDreams)
+	{
+		List<Dream> dreamViewModels = new List<Dream>();
+
+		foreach (var logicDream in logicDreams)
+		{
+			Dream dreamViewModel = new Dream
+			{
+				DreamId = logicDream.DreamId,
+				DreamName = logicDream.DreamName,
+				DreamText = logicDream.DreamText,
+				ReadableBy = logicDream.ReadableBy
+			};
+
+			dreamViewModels.Add(dreamViewModel);
+		}
+
+		return dreamViewModels;
+	}*/
+
+    /*public List<Dream> GetDreamViewModels()
+	{
+		return MapToViewModels(_dreamList);
+	}*/
 
     /*public DreamDTO ReadDream(int dreamId)
 		{

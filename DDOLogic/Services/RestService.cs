@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
 
-namespace LogicDDO.Services
+namespace LogicDDO.Services;
+
+public class RestService
 {
-    public class RestService
+    private readonly RestRepo _restRepo;
+
+    public RestService(RestRepo restRepo)
     {
+        _restRepo = restRepo;
     }
+
+
 }
