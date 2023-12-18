@@ -31,7 +31,6 @@ namespace DataAccessDDO.Repositories
 					command.Parameters.AddWithValue("@DreamName", dream.DreamName);
 					command.Parameters.AddWithValue("@DreamText", dream.DreamText);
 					command.Parameters.AddWithValue("@ReadableBy", dream.ReadableBy);
-					command.Parameters.AddWithValue("@DreamerId", dream.DreamerId);
 
 					command.ExecuteNonQuery();
 				}
@@ -56,8 +55,7 @@ namespace DataAccessDDO.Repositories
 								DreamId = Convert.ToInt32(reader["DreamId"]),
 								DreamName = reader["DreamName"].ToString(),
 								DreamText = reader["DreamText"].ToString(),
-								ReadableBy = reader["ReadableBy"].ToString(),
-								DreamerId = Convert.ToInt32(reader["DreamerId"])
+								ReadableBy = reader["ReadableBy"].ToString()
 							};
 						}
 					}
@@ -120,8 +118,7 @@ namespace DataAccessDDO.Repositories
 								DreamId = Convert.ToInt32(reader["DreamId"]),
 								DreamName = reader["DreamName"].ToString(),
 								DreamText = reader["DreamText"].ToString(),
-								ReadableBy = reader["ReadableBy"].ToString(),
-								DreamerId = Convert.ToInt32(reader["DreamerId"])
+								ReadableBy = reader["ReadableBy"].ToString()
 							};
 
 							dreams.Add(dto);
@@ -145,7 +142,6 @@ namespace DataAccessDDO.Repositories
 					command.Parameters.AddWithValue("@DreamName", dream.DreamName);
 					command.Parameters.AddWithValue("@DreamText", dream.DreamText);
 					command.Parameters.AddWithValue("@ReadableBy", dream.ReadableBy);
-					command.Parameters.AddWithValue("@DreamerId", dream.DreamerId);
 
 					command.ExecuteNonQuery();
 				}
@@ -175,8 +171,7 @@ namespace DataAccessDDO.Repositories
 								DreamId = Convert.ToInt32(reader["DreamId"]),
 								DreamName = reader["DreamName"].ToString(),
 								DreamText = reader["DreamText"].ToString(),
-								ReadableBy = reader["ReadableBy"].ToString(),
-								DreamerId = Convert.ToInt32(reader["DreamerId"])
+								ReadableBy = reader["ReadableBy"].ToString()
 							};
 
 							dreams.Add(dto);
@@ -209,8 +204,7 @@ namespace DataAccessDDO.Repositories
 					DreamId = Convert.ToInt32(reader["DreamId"]),
 					DreamName = reader["DreamName"].ToString(),
 					DreamText = reader["DreamText"].ToString(),
-					ReadableBy = reader["ReadableBy"].ToString(),
-					DreamerId = Convert.ToInt32(reader["DreamerId"]),
+					ReadableBy = reader["ReadableBy"].ToString()
 				};
 
 				dreams.Add(dream);

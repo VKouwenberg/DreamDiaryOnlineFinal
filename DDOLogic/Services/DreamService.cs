@@ -17,19 +17,8 @@ public class DreamService
 
 	public DreamService(DreamRepo dreamRepo)
 	{
-		//_dreamList = new List<Dream>();
 		_dreamRepo = dreamRepo;
-		//SyncWithDatabase();
 	}
-
-	/*private void SyncWithDatabase()
-	{
-		_dreamList.Clear();
-		List<Dream> dreams = ConvertDreamDTOsToDreams();
-		_dreamList.AddRange(dreams);
-	}*/
-
-
 
 	//This creates logicmodels that are intended to be sent to the view as viewmodels
 	//These only contain the data the view needs.
@@ -45,8 +34,7 @@ public class DreamService
 				DreamId = logicDream.DreamId,
 				DreamName = logicDream.DreamName,
 				DreamText = logicDream.DreamText,
-				ReadableBy = logicDream.ReadableBy,
-				DreamerId = logicDream.DreamerId
+				ReadableBy = logicDream.ReadableBy
 			};
 
 			dreamViewModels.Add(dreamViewModel);
@@ -65,7 +53,6 @@ public class DreamService
 		//Dreamer dreamer = new Dreamer(dto.DreamerId, dto.DreamerName);
 		Dream dream = new Dream
 		{
-			DreamerId = dto.DreamerId,
 			DreamName = dto.DreamName,
 			DreamText = dto.DreamText,
 			ReadableBy = dto.ReadableBy,
@@ -100,8 +87,7 @@ public class DreamService
 			DreamId = dream.DreamId,
 			DreamName = dream.DreamName,
 			DreamText = dream.DreamText,
-			ReadableBy = dream.ReadableBy,
-			DreamerId = dream.DreamerId
+			ReadableBy = dream.ReadableBy
 		};
 	}
 
@@ -114,8 +100,8 @@ public class DreamService
 
 	public List<Dream> GetDreams()
 	{
-		var dreamDTOs = ConvertDreamDTOsToDreams();
-		return dreamDTOs;
+		List<Dream> dreams = ConvertDreamDTOsToDreams();
+		return dreams;
 	}
 
 	public void UpdateDream(Dream dream)

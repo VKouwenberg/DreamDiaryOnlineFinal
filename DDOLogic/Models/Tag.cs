@@ -10,6 +10,6 @@ namespace LogicDDO.Models
     {
         public int TagId { get; set; } 
         public string TagName { get; set; }
-        public int DreamEntryId { get; set; }
+        public int RestId { get; set; }
     }
 }

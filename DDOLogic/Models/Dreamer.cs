@@ -1,4 +1,4 @@
-﻿using DataAccessDDO.ModelsDTO;
+﻿/*using DataAccessDDO.ModelsDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ public class Dreamer
     public int DreamerId { get; set; }
     public string DreamerName { get; set; }
     public List<Dream> Dreams { get; set; }
-    public List<Rest> SleepQualities { get; set; }
+    public List<Rest> Rests { get; set; }
 
     public Dreamer(int dreamerId, string dreamerName)
     {
@@ -25,3 +25,4 @@ public class Dreamer
 
     }
 }
+*/

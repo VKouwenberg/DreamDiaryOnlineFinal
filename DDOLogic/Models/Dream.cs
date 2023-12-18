@@ -13,12 +13,11 @@ public class Dream
 	public string DreamName { get; set; }
 	public string DreamText { get; set; }
 	public string ReadableBy { get; set; }
-	public int DreamerId { get; set; }
-	public Dream(int dreamId, string dreamName, int dreamerId)
+
+	public Dream(int dreamId, string dreamName)
 	{
 		DreamId = dreamId;
 		DreamName = dreamName;
-		DreamerId = dreamerId;
 	}
 
 	public Dream()
