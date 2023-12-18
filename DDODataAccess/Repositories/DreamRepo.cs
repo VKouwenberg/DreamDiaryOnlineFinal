@@ -123,7 +123,7 @@ public class DreamRepo
         MySqlCommand command = new MySqlCommand(query, connection);
         MySqlDataReader reader = command.ExecuteReader();
 
-        while (reader.Read())
+        while (reader.Read())//
         {
             DreamDTO dream = dreams.FirstOrDefault(d => d.DreamId == Convert.ToInt32(reader["DreamId"]));
 
