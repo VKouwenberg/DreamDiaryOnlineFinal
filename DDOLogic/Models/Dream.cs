@@ -13,6 +13,7 @@ public class Dream
 	public string DreamName { get; set; }
 	public string DreamText { get; set; }
 	public string ReadableBy { get; set; }
+	public List<Tag> Tags { get; set; }
 
 	public Dream(int dreamId, string dreamName)
 	{

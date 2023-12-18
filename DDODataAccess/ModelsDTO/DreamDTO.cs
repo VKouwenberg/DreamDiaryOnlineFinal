@@ -17,4 +17,5 @@ public class DreamDTO
 
 	[Required]
 	public string ReadableBy { get; set; }
+	public List<TagDTO> Tags { get; set; }
 }

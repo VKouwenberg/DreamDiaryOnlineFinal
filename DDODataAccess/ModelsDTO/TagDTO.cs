@@ -10,14 +10,12 @@ namespace DataAccessDDO.ModelsDTO
     public class TagDTO
     {
         [Key]
-        public int TagId { get; set; } //pk
+        public int TagId { get; set; } 
 
         [Required]
         [MaxLength(255)]
         public string TagName { get; set; }
 
-        public int DreamEntryId { get; set; } //fk
-
-        public List<RestDTO> rests { get; set; } //nav
+        public int RestId { get; set; } 
     }
 }

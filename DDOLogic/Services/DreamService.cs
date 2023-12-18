@@ -23,7 +23,7 @@ public class DreamService
 	//This creates logicmodels that are intended to be sent to the view as viewmodels
 	//These only contain the data the view needs.
 	// /It happens to be the same, but that is not always the case.
-	private List<Dream> MapToViewModels(List<Dream> logicDreams)
+	/*private List<Dream> MapToViewModels(List<Dream> logicDreams)
 	{
 		List<Dream> dreamViewModels = new List<Dream>();
 
@@ -41,7 +41,7 @@ public class DreamService
 		}
 
 		return dreamViewModels;
-	}
+	}*/
 
 	/*public List<Dream> GetDreamViewModels()
 	{
@@ -114,4 +114,31 @@ public class DreamService
 	{
 		_dreamRepo.DeleteDream(dreamId);
 	}
+
+    /*public DreamDTO ReadDream(int dreamId)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
+			{
+				connection.Open();
+				string query = "SELECT * FROM Dream WHERE DreamId = @DreamId";
+				using (MySqlCommand command = new MySqlCommand(query, connection))
+				{
+					command.Parameters.AddWithValue("@DreamId", dreamId);
+					using (MySqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							return new DreamDTO
+							{
+								DreamId = Convert.ToInt32(reader["DreamId"]),
+								DreamName = reader["DreamName"].ToString(),
+								DreamText = reader["DreamText"].ToString(),
+								ReadableBy = reader["ReadableBy"].ToString()
+							};
+						}
+					}
+				}
+			}
+			return null;
+		}*/
 }

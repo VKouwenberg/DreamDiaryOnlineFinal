@@ -10,13 +10,11 @@ namespace DataAccessDDO.ModelsDTO
 {
     public class RestDTO //koppeltabel
     {
+        public int RestId { get; set; }
 		public int DreamId { get; set; } //fk
 		public int TagId { get; set; } //fk
 
         [MaxLength(255)]
         public string RestName { get; set; }
-
-        public DreamDTO DreamDTO { get; set; } //nav
-        public TagDTO TagDTO { get; set; } //nav
     }
 }
