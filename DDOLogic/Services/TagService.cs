@@ -27,6 +27,9 @@ public class TagService
             RestId = dto.RestId
         };
 
+        /*Console.WriteLine("Tag in VM mapping MapTagDTOToTag");
+        Console.WriteLine(tag.TagName);*/
+
         return tag;
     }
 
@@ -37,6 +40,10 @@ public class TagService
         foreach (TagDTO dto in dTOs)
         {
             Tag tag = MapTagDTOToTag(dto);
+
+            /*Console.WriteLine("Tag in VM mapping all. MapTagDTOsToTags");
+            Console.WriteLine(tag.TagName);*/
+
             tags.Add(tag);
         }
 

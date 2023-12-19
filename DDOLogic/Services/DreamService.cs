@@ -28,8 +28,21 @@ public class DreamService
 	public List<Dream> GetDreams()
 	{
 		List<Dream> dreams = MapDreamDTOsToDreams(_dreamRepo.GetAllDreams());
-		return dreams;
-	}
+
+        /*Console.WriteLine("GetDreams Logic tag names");
+        foreach (Dream dream in dreams)
+        {
+			if (dream.Tags != null)
+			{
+                foreach (Tag tag in dream.Tags)
+                {
+                    Console.WriteLine(tag.TagName.ToString());
+                }
+            }
+			
+        }*/
+        return dreams;
+    }
 
 	private Dream MapDreamDTOToDream(DreamDTO dto)
 	{
@@ -44,7 +57,15 @@ public class DreamService
 		if (dto.Tags != null)
 		{
 			List<Tag> tags = _tagService.MapTagDTOsToTags(dto.Tags);
-		}
+
+			/*Console.WriteLine("Individual dto to dream map MapDreamDTOToDream");
+			foreach (Tag tag in tags)
+			{
+				Console.WriteLine(tag.TagName.ToString());
+			}*/
+
+        }
+
 
 		return dream;
 	}
@@ -63,7 +84,19 @@ public class DreamService
 			dreams.Add(dream);
 		}
 
-		return dreams;
+        /*Console.WriteLine("Maps dreamDTOs to dreams MapDreamDTOsToDreams");
+        foreach (Dream dream in dreams)
+        {
+			if (dream.Tags != null)
+			{
+                foreach (Tag tag in dream.Tags)
+                {
+                    Console.WriteLine(tag.TagName.ToString());
+                }
+            }
+        }*/
+
+        return dreams;
 	}
 
 	//maps logic model to DTO

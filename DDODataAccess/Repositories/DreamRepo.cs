@@ -17,66 +17,10 @@ public class DreamRepo
         _databaseSettings = databaseSettings.Value;
     }
 
-
-
-    public void CreateDream(DreamDTO dto)
-    {
-        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
-        {
-            connection.Open();
-
-            string query = "INSERT INTO Dream (DreamName, DreamText, DreamerId) VALUES (@DreamName, @DreamText, @ReadableBy, @DreamerId)";
-
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@DreamName", dto.DreamName);
-                command.Parameters.AddWithValue("@DreamText", dto.DreamText);
-                command.Parameters.AddWithValue("@ReadableBy", dto.ReadableBy);
-
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-
-
-    public void UpdateDream(DreamDTO dto)
-    {
-        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
-        {
-            connection.Open();
-            string query = "UPDATE Dream SET DreamName = @DreamName, DreamText = @DreamText WHERE DreamId = @DreamId";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@DreamId", dto.DreamId);
-                command.Parameters.AddWithValue("@DreamName", dto.DreamName);
-                command.Parameters.AddWithValue("@DreamText", dto.DreamText);
-                command.Parameters.AddWithValue("@ReadableBy", dto.ReadableBy);
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    public void DeleteDream(int dreamId)
-    {
-        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
-        {
-            connection.Open();
-            string query = "DELETE FROM Dream WHERE DreamId = @DreamId";
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@DreamId", dreamId);
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    
-
     public List<DreamDTO> GetAllDreams()
     {
-        Console.WriteLine("This is the string in DreamRepo");
-        Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");
+        /*Console.WriteLine("This is the string in DreamRepo");
+        Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");*/
 
 
         List<DreamDTO> dreams = new List<DreamDTO>();
@@ -127,7 +71,78 @@ public class DreamRepo
         }
         connection.Close();
 
+
+        Console.WriteLine("GetAllDreams in DreamRepo. All tags in the dtos");
+        foreach (DreamDTO dto in dreams)
+        {
+            Console.WriteLine("Dreamname " + dto.DreamName.ToString());
+
+            if (dto.Tags != null)
+            {
+                foreach (TagDTO tag in dto.Tags)
+                {
+                    Console.WriteLine("Tag " + tag.TagName.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags for this dream");
+            }
+            
+        }
+
+
         return dreams;
+    }
+
+    public void CreateDream(DreamDTO dto)
+    {
+        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
+        {
+            connection.Open();
+
+            string query = "INSERT INTO Dream (DreamName, DreamText, DreamerId) VALUES (@DreamName, @DreamText, @ReadableBy, @DreamerId)";
+
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@DreamName", dto.DreamName);
+                command.Parameters.AddWithValue("@DreamText", dto.DreamText);
+                command.Parameters.AddWithValue("@ReadableBy", dto.ReadableBy);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void UpdateDream(DreamDTO dto)
+    {
+        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
+        {
+            connection.Open();
+            string query = "UPDATE Dream SET DreamName = @DreamName, DreamText = @DreamText WHERE DreamId = @DreamId";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@DreamId", dto.DreamId);
+                command.Parameters.AddWithValue("@DreamName", dto.DreamName);
+                command.Parameters.AddWithValue("@DreamText", dto.DreamText);
+                command.Parameters.AddWithValue("@ReadableBy", dto.ReadableBy);
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void DeleteDream(int dreamId)
+    {
+        using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
+        {
+            connection.Open();
+            string query = "DELETE FROM Dream WHERE DreamId = @DreamId";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@DreamId", dreamId);
+                command.ExecuteNonQuery();
+            }
+        }
     }
 
     public DreamDTO GetDream(int dreamId)
