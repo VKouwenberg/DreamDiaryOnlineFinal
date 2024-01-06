@@ -19,10 +19,6 @@ public class DreamRepo
 
     public List<DreamDTO> GetAllDreams()
     {
-        /*Console.WriteLine("This is the string in DreamRepo");
-        Console.WriteLine($"Connection String: {_databaseSettings.DefaultConnection}");*/
-
-
         List<DreamDTO> dreams = new List<DreamDTO>();
 
         MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
@@ -70,27 +66,6 @@ public class DreamRepo
             }
         }
         connection.Close();
-
-
-        Console.WriteLine("GetAllDreams in DreamRepo. All tags in the dtos");
-        foreach (DreamDTO dto in dreams)
-        {
-            Console.WriteLine("Dreamname " + dto.DreamName.ToString());
-
-            if (dto.Tags != null)
-            {
-                foreach (TagDTO tag in dto.Tags)
-                {
-                    Console.WriteLine("Tag " + tag.TagName.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine("No tags for this dream");
-            }
-            
-        }
-
 
         return dreams;
     }

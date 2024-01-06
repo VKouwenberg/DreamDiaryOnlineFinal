@@ -12,7 +12,6 @@ namespace LogicDDO.Services;
 
 public class DreamService
 {
-	//private readonly List<Dream> _dreamList;
 	private readonly DreamRepo _dreamRepo;
 	private readonly TagService _tagService;
 
@@ -29,24 +28,11 @@ public class DreamService
 	{
 		List<Dream> dreams = MapDreamDTOsToDreams(_dreamRepo.GetAllDreams());
 
-        /*Console.WriteLine("GetDreams Logic tag names");
-        foreach (Dream dream in dreams)
-        {
-			if (dream.Tags != null)
-			{
-                foreach (Tag tag in dream.Tags)
-                {
-                    Console.WriteLine(tag.TagName.ToString());
-                }
-            }
-			
-        }*/
         return dreams;
     }
 
 	private Dream MapDreamDTOToDream(DreamDTO dto)
 	{
-		//Dreamer dreamer = new Dreamer(dto.DreamerId, dto.DreamerName);
 		Dream dream = new Dream
 		{
 			DreamName = dto.DreamName,
@@ -56,13 +42,8 @@ public class DreamService
 		};
 		if (dto.Tags != null)
 		{
-			List<Tag> tags = _tagService.MapTagDTOsToTags(dto.Tags);
-
-			/*Console.WriteLine("Individual dto to dream map MapDreamDTOToDream");
-			foreach (Tag tag in tags)
-			{
-				Console.WriteLine(tag.TagName.ToString());
-			}*/
+			List<Tag> dtoTags = _tagService.MapTagDTOsToTags(dto.Tags);
+			dream.Tags = dtoTags;
 
         }
 
@@ -73,9 +54,7 @@ public class DreamService
 
 	//Maps DTOs to logic models
 	private List<Dream> MapDreamDTOsToDreams(List<DreamDTO> dTOs)
-	{/*
-		List<DreamDTO> dreamDTOs = _dreamRepo.GetAllDreams();
-*/
+	{
 		List<Dream> dreams = new List<Dream>();
 
 		foreach (DreamDTO dto in dTOs)
@@ -83,18 +62,6 @@ public class DreamService
 			Dream dream = MapDreamDTOToDream(dto);
 			dreams.Add(dream);
 		}
-
-        /*Console.WriteLine("Maps dreamDTOs to dreams MapDreamDTOsToDreams");
-        foreach (Dream dream in dreams)
-        {
-			if (dream.Tags != null)
-			{
-                foreach (Tag tag in dream.Tags)
-                {
-                    Console.WriteLine(tag.TagName.ToString());
-                }
-            }
-        }*/
 
         return dreams;
 	}
