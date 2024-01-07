@@ -30,7 +30,37 @@ public class DreamService
 
         return dreams;
     }
+	
 
+	
+
+	//converts a logic dream into a dream dto, which is then inserted into the database
+	public void CreateDream(Dream dream)
+	{
+		DreamDTO dto = MapToDTO(dream);
+		_dreamRepo.CreateDream(dto);
+	}
+
+	//maps logic model to DTO
+	private DreamDTO MapToDTO(Dream dream)
+	{
+		DreamDTO dto = new DreamDTO()
+		{
+			DreamId = dream.DreamId,
+			DreamName = dream.DreamName,
+			DreamText = dream.DreamText,
+			ReadableBy = dream.ReadableBy
+		};
+
+		if (dream.Tags != null && dream.Tags.Any())
+		{
+			dto.Tags = _tagService.MapTagsToTagDTOs(dream.Tags);
+		}
+
+		return dto;
+	}
+
+	//2 methods map DTOs to logic models
 	private Dream MapDreamDTOToDream(DreamDTO dto)
 	{
 		Dream dream = new Dream
@@ -40,19 +70,18 @@ public class DreamService
 			ReadableBy = dto.ReadableBy,
 			DreamId = dto.DreamId
 		};
-		if (dto.Tags != null)
+
+		if (dto.Tags != null && dto.Tags.Any())
 		{
 			List<Tag> dtoTags = _tagService.MapTagDTOsToTags(dto.Tags);
 			dream.Tags = dtoTags;
 
-        }
+		}
 
 
 		return dream;
 	}
 
-
-	//Maps DTOs to logic models
 	private List<Dream> MapDreamDTOsToDreams(List<DreamDTO> dTOs)
 	{
 		List<Dream> dreams = new List<Dream>();
@@ -63,90 +92,6 @@ public class DreamService
 			dreams.Add(dream);
 		}
 
-        return dreams;
+		return dreams;
 	}
-
-	//maps logic model to DTO
-	private DreamDTO MapToDTO(Dream dream)
-	{
-		return new DataAccessDDO.ModelsDTO.DreamDTO
-		{
-			DreamId = dream.DreamId,
-			DreamName = dream.DreamName,
-			DreamText = dream.DreamText,
-			ReadableBy = dream.ReadableBy
-		};
-	}
-
-	//CRUD
-	public void CreateDream(Dream dream)
-	{
-		var dreamDTO = MapToDTO(dream);
-		_dreamRepo.CreateDream(dreamDTO);
-	}
-
-	public void UpdateDream(Dream dream)
-	{
-		var dreamDTO = MapToDTO(dream);
-		_dreamRepo.UpdateDream(dreamDTO);
-	}
-
-	public void DeleteDream(int dreamId)
-	{
-		_dreamRepo.DeleteDream(dreamId);
-	}
-    //This creates logicmodels that are intended to be sent to the view as viewmodels
-    //These only contain the data the view needs.
-    // /It happens to be the same, but that is not always the case.
-    /*private List<Dream> MapToViewModels(List<Dream> logicDreams)
-	{
-		List<Dream> dreamViewModels = new List<Dream>();
-
-		foreach (var logicDream in logicDreams)
-		{
-			Dream dreamViewModel = new Dream
-			{
-				DreamId = logicDream.DreamId,
-				DreamName = logicDream.DreamName,
-				DreamText = logicDream.DreamText,
-				ReadableBy = logicDream.ReadableBy
-			};
-
-			dreamViewModels.Add(dreamViewModel);
-		}
-
-		return dreamViewModels;
-	}*/
-
-    /*public List<Dream> GetDreamViewModels()
-	{
-		return MapToViewModels(_dreamList);
-	}*/
-
-    /*public DreamDTO ReadDream(int dreamId)
-		{
-			using (MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection))
-			{
-				connection.Open();
-				string query = "SELECT * FROM Dream WHERE DreamId = @DreamId";
-				using (MySqlCommand command = new MySqlCommand(query, connection))
-				{
-					command.Parameters.AddWithValue("@DreamId", dreamId);
-					using (MySqlDataReader reader = command.ExecuteReader())
-					{
-						if (reader.Read())
-						{
-							return new DreamDTO
-							{
-								DreamId = Convert.ToInt32(reader["DreamId"]),
-								DreamName = reader["DreamName"].ToString(),
-								DreamText = reader["DreamText"].ToString(),
-								ReadableBy = reader["ReadableBy"].ToString()
-							};
-						}
-					}
-				}
-			}
-			return null;
-		}*/
 }

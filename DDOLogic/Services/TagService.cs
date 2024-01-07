@@ -42,4 +42,28 @@ public class TagService
 
         return tags;
     }
+
+    public List<TagDTO> MapTagsToTagDTOs(List<Tag> tags)
+    {
+        List<TagDTO> dTOs = new List<TagDTO>();
+
+        foreach (Tag tag in tags)
+        {
+            TagDTO dto = MapTagToTagDTO(tag);
+            dTOs.Add(dto);
+        }
+
+        return dTOs;
+    }
+
+    public TagDTO MapTagToTagDTO(Tag tag)
+    {
+        TagDTO dto = new TagDTO
+        {
+            TagId=tag.TagId,
+            TagName = tag.TagName
+        };
+
+        return dto;
+    }
 }
