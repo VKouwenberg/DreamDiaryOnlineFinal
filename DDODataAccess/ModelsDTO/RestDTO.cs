@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessDDO.ModelsDTO
 {
-    public class RestDTO //koppeltabel
+    public class RestDTO 
     {
         public int RestId { get; set; }
-		public int DreamId { get; set; } //fk
-		public int TagId { get; set; } //fk
+		public int DreamId { get; set; }
+		public int TagId { get; set; } 
 
         [MaxLength(255)]
         public string RestName { get; set; }

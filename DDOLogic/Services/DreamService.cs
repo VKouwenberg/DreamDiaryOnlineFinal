@@ -30,9 +30,6 @@ public class DreamService
 
         return dreams;
     }
-	
-
-	
 
 	//converts a logic dream into a dream dto, which is then inserted into the database
 	public void CreateDream(Dream dream)
@@ -40,6 +37,8 @@ public class DreamService
 		DreamDTO dto = MapToDTO(dream);
 		_dreamRepo.CreateDream(dto);
 	}
+
+
 
 	//maps logic model to DTO
 	private DreamDTO MapToDTO(Dream dream)

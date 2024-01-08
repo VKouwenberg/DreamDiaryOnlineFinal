@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.DatabaseSettings;
 using DataAccessDDO.ModelsDTO;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 
@@ -19,20 +20,41 @@ public class TagRepo
         _databaseSettings = databaseSettings.Value;
     }
 
-    public void CreateTag(TagDTO tag)
+    public TagRepo()
+    {
+
+    }
+    
+    public void CreateTag(TagDTO dto)
     {
         MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
         connection.Open();
 
-        string query = "INSERT INTO Tag (TagName) VALUES (@TagName)";
+        string query = "INSERT INTO Tag (TagName, RestId) VALUES (@TagName, @RestId)";
 
-        using (MySqlCommand command = new MySqlCommand(query, connection))
-        {
-            command.Parameters.AddWithValue("@TagName", tag.TagName);
+        using MySqlCommand command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@TagName", dto.TagName);
+        command.Parameters.AddWithValue("@RestId", dto.RestId);
 
-            command.ExecuteNonQuery();
-        }
+        command.ExecuteNonQuery();
+        connection.Close();
+    }
+
+    //deletes all tags associated with a dreamId
+    public void DeleteDreamTags (int dreamId)
+    {
+        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        connection.Open();
+
+        string query = "DELETE FROM Tag WHERE DreamId = @DreamId";
+
+        using MySqlCommand command = new MySqlCommand(query, connection);
+
+        command.Parameters.AddWithValue("@DreamId", dreamId);
+
+        command.ExecuteNonQuery();
 
         connection.Close();
     }
+
 }

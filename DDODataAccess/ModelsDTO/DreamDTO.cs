@@ -6,7 +6,7 @@ namespace DataAccessDDO.ModelsDTO;
 public class DreamDTO
 {
 	[Key]
-	public int DreamId { get; set; } //pk
+	public int DreamId { get; set; } 
 
 	[Required]
 	[MaxLength(255)]
