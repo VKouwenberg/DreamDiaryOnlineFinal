@@ -16,12 +16,15 @@ public class DreamRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly TagRepo _tagRepo;
+    private readonly RestRepo _restRepo;
 
     public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
-        TagRepo tagRepo)
+        TagRepo tagRepo,
+        RestRepo restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _tagRepo = tagRepo;
+        _restRepo = restRepo;
     }
 
     public List<DreamDTO> GetAllDreams()
@@ -74,37 +77,11 @@ public class DreamRepo
         }
         connection.Close();
 
-        foreach (DreamDTO dto in dreams)
-        {
-            Console.WriteLine("DREAMNAME " + dto.DreamName);
-            if (dto.Tags != null && dto.Tags.Any())
-            {
-                foreach (TagDTO tagDto in dto.Tags)
-                {
-                    Console.WriteLine(tagDto.TagName);
-                }
-            }
-            Console.WriteLine("---------------------------");
-        }
-
-
         return dreams;
     }
 
     public void CreateDream(DreamDTO dto)
     {
-        Console.WriteLine("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
-        Console.WriteLine("CREATE DREAMNAME " + dto.DreamName);
-        if (dto.Tags != null && dto.Tags.Any())
-        {
-            foreach (TagDTO tagDto in dto.Tags)
-            {
-                Console.WriteLine(tagDto.TagName);
-            }
-        }
-        Console.WriteLine("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
-
-
         using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
@@ -179,7 +156,20 @@ public class DreamRepo
 
     public void UpdateDream(DreamDTO dto)
     {
-        using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        Console.WriteLine("DTO RECEIVED TO UPDATE");
+        Console.WriteLine(dto.DreamName);
+		Console.WriteLine(dto.DreamText);
+        if (dto.Tags != null && dto.Tags.Any()) 
+        {
+            foreach (TagDTO tag in dto.Tags)
+            {
+                Console.WriteLine(tag.TagName);
+            }
+        }
+        Console.WriteLine("END OF DREAM");
+
+
+		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
 
@@ -187,7 +177,7 @@ public class DreamRepo
         string updateDreamQuery = "UPDATE Dream SET " +
             "DreamName = @DreamName, " +
             "DreamText = @DreamText, " +
-            "ReadableBy = @ReadableBy" +
+            "ReadableBy = @ReadableBy " +
             "WHERE DreamId = @DreamId";
 
         using MySqlCommand UpdateDreamCommand = new MySqlCommand(updateDreamQuery, connection);
@@ -199,7 +189,7 @@ public class DreamRepo
 
         UpdateDreamCommand.ExecuteNonQuery();
 
-        //removes all existing tags
+        //removes all existing tags with this id
         _tagRepo.DeleteDreamTags(dto.DreamId);
 
 
@@ -208,9 +198,31 @@ public class DreamRepo
         {
             foreach (TagDTO tag in dto.Tags)
             {
-                _tagRepo.CreateTag(tag);
+				Console.WriteLine("TAG ID DREAM ID IN ORDER BEFORE CREATING THE TAG");
+				Console.WriteLine(tag.TagId);
+				Console.WriteLine(dto.DreamId);
+
+                if (!string.IsNullOrWhiteSpace(tag.TagName))
+                {
+					//create the tag itself
+					int newTagId = _tagRepo.CreateTag(tag);
+
+					Console.WriteLine("TAG ID DREAM ID NEW ID IN ORDER AFTER CREATING THE TAG");
+					Console.WriteLine(tag.TagId);
+					Console.WriteLine(dto.DreamId);
+					Console.WriteLine(newTagId);
+
+					//link the tag and the dreamId in a new rest
+					_restRepo.CreateRest(newTagId, dto.DreamId);
+				}
+                else
+                {
+                    _restRepo.DeleteRest(tag.TagId, dto.DreamId);
+                }
             }
         }
+
+        connection.Close();
     }
 
     public void DeleteDream(int dreamId)
@@ -224,10 +236,10 @@ public class DreamRepo
             command.Parameters.AddWithValue("@DreamId", dreamId);
             command.ExecuteNonQuery();
         }
+		connection.Close();
+	}
 
-    }
-
-    public DreamDTO GetDream(int dreamId)
+    public DreamDTO GetDreamById(int dreamId)
     {
         DreamDTO dto = null;
 
@@ -242,12 +254,13 @@ public class DreamRepo
                 "tag.TagId, " +
                 "tag.TagName " +
                 "FROM dream " +
-                "JOIN rest ON dream.DreamId = rest.DreamId " +
-                "JOIN tag ON rest.TagId = tag.TagId " +
+                "LEFT JOIN rest ON dream.DreamId = rest.DreamId " +
+                "LEFT JOIN tag ON rest.TagId = tag.TagId " +
                 "WHERE dream.DreamId = @DreamId";
 
         MySqlCommand command = new MySqlCommand(query, connection);
         command.Parameters.AddWithValue("@DreamId", dreamId);
+
         MySqlDataReader reader = command.ExecuteReader();
 
         while (reader.Read())

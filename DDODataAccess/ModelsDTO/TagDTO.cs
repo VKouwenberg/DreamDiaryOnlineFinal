@@ -12,10 +12,7 @@ namespace DataAccessDDO.ModelsDTO
         [Key]
         public int TagId { get; set; } 
 
-        [Required]
         [MaxLength(255)]
         public string TagName { get; set; }
-
-        public int RestId { get; set; } 
     }
 }

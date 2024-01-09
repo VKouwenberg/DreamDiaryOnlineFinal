@@ -24,37 +24,96 @@ public class TagRepo
     {
 
     }
-    
-    public void CreateTag(TagDTO dto)
-    {
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
 
-        string query = "INSERT INTO Tag (TagName, RestId) VALUES (@TagName, @RestId)";
+	public int CreateTag(TagDTO dto)
+	{
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
 
-        using MySqlCommand command = new MySqlCommand(query, connection);
-        command.Parameters.AddWithValue("@TagName", dto.TagName);
-        command.Parameters.AddWithValue("@RestId", dto.RestId);
+		string query = "INSERT INTO Tag (TagName) VALUES (@TagName); SELECT LAST_INSERT_ID()";
 
-        command.ExecuteNonQuery();
-        connection.Close();
-    }
+		using MySqlCommand command = new MySqlCommand(query, connection);
+		command.Parameters.AddWithValue("@TagName", dto.TagName);
 
-    //deletes all tags associated with a dreamId
-    public void DeleteDreamTags (int dreamId)
-    {
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
+		int newTagId = Convert.ToInt32(command.ExecuteScalar());
 
-        string query = "DELETE FROM Tag WHERE DreamId = @DreamId";
+		connection.Close();
 
-        using MySqlCommand command = new MySqlCommand(query, connection);
+        Console.WriteLine("New Tag Id " + newTagId);
 
-        command.Parameters.AddWithValue("@DreamId", dreamId);
+		return newTagId;
+	}
 
-        command.ExecuteNonQuery();
+	public void DeleteDreamTags(int dreamId)
+	{
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
 
-        connection.Close();
-    }
+		//removes the relation
+		string deleteRelationQuery = "DELETE FROM Rest WHERE DreamId = @DreamId";
 
+		using MySqlCommand deleteRelationCommand = new MySqlCommand(deleteRelationQuery, connection);
+
+		deleteRelationCommand.Parameters.AddWithValue("@DreamId", dreamId);
+
+		deleteRelationCommand.ExecuteNonQuery();
+
+		//things not linked in the database are apparently sometimes called orphans
+		//remove the orphans. Kill the younglings
+		string removeOrphanTagsQuery = "DELETE FROM Tag WHERE NOT EXISTS " +
+			"(SELECT 1 FROM Rest WHERE Tag.TagId = Rest.TagId)";
+
+		using MySqlCommand removeOrphanTagsCommand = new MySqlCommand(removeOrphanTagsQuery, connection);
+
+		removeOrphanTagsCommand.ExecuteNonQuery();
+
+		connection.Close();
+	}
+
+	public void DeleteTagOrphan()
+	{
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
+
+		string removeOrphanTagsQuery = "DELETE FROM Tag WHERE NOT EXISTS " +
+			"(SELECT 1 FROM Rest WHERE Tag.TagId = Rest.TagId)";
+
+		using MySqlCommand removeOrphanTagsCommand = new MySqlCommand(removeOrphanTagsQuery, connection);
+
+		removeOrphanTagsCommand.ExecuteNonQuery();
+
+		connection.Close();
+	}
+
+	public void DeleteTagByTagName(string tagName)
+	{
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
+
+		string query = "DELETE FROM Tag WHERE TagName = @tagName";
+
+		using MySqlCommand command = new MySqlCommand(query, connection);
+
+		command.Parameters.AddWithValue("@TagName", tagName);
+
+		command.ExecuteNonQuery();
+
+		connection.Close();
+	}
+
+	/*public void DeleteTag(TagDTO dto)
+	{
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
+
+		string query = "DELETE FROM Tag WHERE TagName = @tagName";
+
+		using MySqlCommand command = new MySqlCommand(query, connection);
+
+		command.Parameters.AddWithValue("@TagName", tagName);
+
+		command.ExecuteNonQuery();
+
+		connection.Close();
+	}*/
 }

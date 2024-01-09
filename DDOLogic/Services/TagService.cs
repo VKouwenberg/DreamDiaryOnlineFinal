@@ -23,8 +23,7 @@ public class TagService
         Tag tag = new Tag
         {
             TagId = dto.TagId,
-            TagName = dto.TagName,
-            RestId = dto.RestId
+            TagName = dto.TagName
         };
 
         return tag;

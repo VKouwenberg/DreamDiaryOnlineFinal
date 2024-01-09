@@ -21,6 +21,26 @@ public class DreamService
 		_tagService = tagService;
 	}
 
+	public Dream GetDreamById(int id)
+	{
+		Console.WriteLine("ID SEND TO RETRIEVE " + id);
+
+		DreamDTO dto = _dreamRepo.GetDreamById(id);
+
+		Console.WriteLine("DREAM RETRIEVED FROM DATABASE BY ID " + dto.DreamId);
+		Console.WriteLine(dto.DreamName);
+		if (dto.Tags != null && dto.Tags.Any()) 
+		{
+			foreach (TagDTO tag in dto.Tags)
+			{
+				Console.WriteLine(tag.TagName);
+			}
+		}
+		Console.WriteLine("READY TO MAP DREAMDTO TO DREAM LOGIC MODEL");
+		Dream dream = MapDreamDTOToDream(dto);
+		return dream;
+	}
+
 	//Calls private mapping method that converts DTOs to logic models
 	//The mapping method is private because otherwise I'd have to link the DAL to the view
 	//Now you can Get Dreams without having to pass on a list
@@ -38,7 +58,11 @@ public class DreamService
 		_dreamRepo.CreateDream(dto);
 	}
 
-
+	public void UpdateDream(Dream dream)
+	{
+		DreamDTO dto = MapToDTO(dream);
+		_dreamRepo.UpdateDream(dto);
+	}
 
 	//maps logic model to DTO
 	private DreamDTO MapToDTO(Dream dream)
@@ -67,7 +91,8 @@ public class DreamService
 			DreamName = dto.DreamName,
 			DreamText = dto.DreamText,
 			ReadableBy = dto.ReadableBy,
-			DreamId = dto.DreamId
+			DreamId = dto.DreamId,
+			Tags = new List<Tag>()
 		};
 
 		if (dto.Tags != null && dto.Tags.Any())
