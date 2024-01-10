@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DataAccessDDO.DatabaseSettings;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataAccessDDO.Repositories;
 
@@ -35,7 +36,22 @@ public class RestRepo
 		connection.Close();
 	}
 
-    public void DeleteRest(int tagId, int dreamId)
+	public void DeleteRestByDreamId(int dreamId)
+	{
+        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        connection.Open();
+
+        string query = "DELETE FROM Rest WHERE DreamId = @DreamId";
+
+        using MySqlCommand command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@DreamId", dreamId);
+
+        command.ExecuteNonQuery();
+
+        connection.Close();
+    }
+
+    public void DeleteRestByTagIdAndDreamId(int tagId, int dreamId)
     {
 		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 		connection.Open();

@@ -58,6 +58,11 @@ public class DreamService
 		_dreamRepo.CreateDream(dto);
 	}
 
+	public void DeleteDream(int id)
+	{
+		_dreamRepo.DeleteDream(id);
+	}
+
 	public void UpdateDream(Dream dream)
 	{
 		DreamDTO dto = MapToDTO(dream);
