@@ -11,7 +11,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataAccessDDO.Repositories;
 
-public class TagRepo
+public class TagRepo : DataAccessInterfaces.ITagRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly RestRepo _restRepo;

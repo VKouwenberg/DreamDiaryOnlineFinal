@@ -8,7 +8,7 @@ using DataAccessDDO.Repositories;
 
 namespace LogicDDO.Services;
 
-public class RestService
+public class RestService : LogicInterfaces.IRestService
 {
     private readonly RestRepo _restRepo;
 

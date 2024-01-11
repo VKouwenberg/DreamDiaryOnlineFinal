@@ -12,7 +12,7 @@ using Org.BouncyCastle.Utilities.IO;
 
 namespace DataAccessDDO.Repositories;
 
-public class DreamRepo
+public class DreamRepo : DataAccessInterfaces.IDreamRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly TagRepo _tagRepo;

@@ -6,11 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
-using Org.BouncyCastle.Bcpg; //what even is this
 
 namespace LogicDDO.Services;
 
-public class DreamService
+public class DreamService : LogicInterfaces.IDreamService
 {
 	private readonly DreamRepo _dreamRepo;
 	private readonly TagService _tagService;

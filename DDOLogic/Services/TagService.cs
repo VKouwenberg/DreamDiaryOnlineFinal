@@ -9,7 +9,7 @@ using LogicDDO.Models;
 
 namespace LogicDDO.Services;
 
-public class TagService
+public class TagService : LogicInterfaces.ITagService
 {
     private readonly TagRepo _tagRepo;
 
@@ -41,8 +41,18 @@ public class TagService
 
         return tags;
     }
+	public TagDTO MapTagToTagDTO(Tag tag)
+	{
+		TagDTO dto = new TagDTO
+		{
+			TagId = tag.TagId,
+			TagName = tag.TagName
+		};
 
-    public List<TagDTO> MapTagsToTagDTOs(List<Tag> tags)
+		return dto;
+	}
+
+	public List<TagDTO> MapTagsToTagDTOs(List<Tag> tags)
     {
         List<TagDTO> dTOs = new List<TagDTO>();
 
@@ -53,16 +63,5 @@ public class TagService
         }
 
         return dTOs;
-    }
-
-    public TagDTO MapTagToTagDTO(Tag tag)
-    {
-        TagDTO dto = new TagDTO
-        {
-            TagId=tag.TagId,
-            TagName = tag.TagName
-        };
-
-        return dto;
     }
 }
