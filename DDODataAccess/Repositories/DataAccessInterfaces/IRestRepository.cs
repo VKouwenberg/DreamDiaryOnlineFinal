@@ -9,4 +9,7 @@ namespace DataAccessDDO.Repositories.DataAccessInterfaces;
 
 public interface IRestRepository
 {
+	void CreateRest(int tagId, int dreamId);
+	void DeleteRestByDreamId(int dreamId);
+	void DeleteRestByTagIdAndDreamId(int tagId, int dreamId);
 }

@@ -8,15 +8,17 @@ using DataAccessDDO.ModelsDTO;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using DataAccessDDO.Repositories.DataAccessInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
 public class TagRepo : DataAccessInterfaces.ITagRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly RestRepo _restRepo;
+    private readonly IRestRepository _restRepo;
 
-    public TagRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings, RestRepo restRepo)
+    public TagRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings, 
+        IRestRepository restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _restRepo = restRepo;

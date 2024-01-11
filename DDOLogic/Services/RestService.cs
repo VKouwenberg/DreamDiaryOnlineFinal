@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
+using LogicDDO.Services.LogicInterfaces;
+using DataAccessDDO.Repositories.DataAccessInterfaces;
 
 namespace LogicDDO.Services;
 
 public class RestService : LogicInterfaces.IRestService
 {
-    private readonly RestRepo _restRepo;
+    private readonly IRestRepository _restRepo;
 
-    public RestService(RestRepo restRepo)
+    public RestService(IRestRepository restRepo)
     {
         _restRepo = restRepo;
     }

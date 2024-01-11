@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using DataAccessDDO.ModelsDTO;
 using DataAccessDDO.Repositories;
 using LogicDDO.Models;
+using DataAccessDDO.Repositories.DataAccessInterfaces;
 
 namespace LogicDDO.Services;
 
 public class TagService : LogicInterfaces.ITagService
 {
-    private readonly TagRepo _tagRepo;
+    private readonly ITagRepository _tagRepo;
 
-    public TagService(TagRepo tagRepo)
+    public TagService(ITagRepository tagRepo)
     {
         _tagRepo = tagRepo;
     }

@@ -9,18 +9,19 @@ using DataAccessDDO.Repositories;
 using Azure;
 using System.IO;
 using Org.BouncyCastle.Utilities.IO;
+using DataAccessDDO.Repositories.DataAccessInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
 public class DreamRepo : DataAccessInterfaces.IDreamRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly TagRepo _tagRepo;
-    private readonly RestRepo _restRepo;
+    private readonly ITagRepository _tagRepo;
+    private readonly IRestRepository _restRepo;
 
     public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
-        TagRepo tagRepo,
-        RestRepo restRepo)
+        ITagRepository tagRepo,
+        IRestRepository restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _tagRepo = tagRepo;
