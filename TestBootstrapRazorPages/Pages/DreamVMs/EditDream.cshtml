@@ -1,0 +1,38 @@
+﻿@page "{id:int}"
+@model TestBootstrapRazorPages.Pages.DreamVMs.EditDreamModel
+@using TestBootstrapRazorPages.ViewModels
+
+@{
+	ViewData["Title"] = "Edit Dream";
+}
+
+<h1>Edit Dream</h1>
+
+<form method="post">
+	<input type="hidden" asp-for="Dream.Id" />
+
+	<div class="form-group">
+		<label asp-for="Dream.DreamName"></label>
+		<input asp-for="Dream.DreamName" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.DreamText"></label>
+		<input asp-for="Dream.DreamText" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.ReadableBy"></label>
+		<input asp-for="Dream.ReadableBy" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.Tags"></label>
+		@for (int i = 0; i < Model.Dream.Tags.Count; i++)
+		{
+			<input asp-for="Dream.Tags[i].TagName" class="form-control" />
+		}
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+</form>

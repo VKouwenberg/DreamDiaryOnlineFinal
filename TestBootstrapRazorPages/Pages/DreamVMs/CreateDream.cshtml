@@ -1,0 +1,41 @@
+﻿@page
+@model TestBootstrapRazorPages.Pages.DreamVMs.CreateDreamModel
+
+<h1>Create Dream Page</h1>
+
+<form method="post">
+
+	@* dream *@
+	<div class="form-group">
+		<label asp-for="DreamVM.DreamName"></label>
+		<input asp-for="DreamVM.DreamName" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DreamVM.DreamText"></label>
+		<input asp-for="DreamVM.DreamText" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DreamVM.ReadableBy"></label>
+		<input asp-for="DreamVM.ReadableBy" class="form-control" />
+	</div>
+
+	@* tags *@
+	<div class="form-group">
+		<label for="tag1">Tag 1</label>
+		<input type="text" name="DreamVM.Tags[0].TagName" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label for="tag2">Tag 2</label>
+		<input type="text" name="DreamVM.Tags[1].TagName" class="form-control" />
+	</div>
+
+	<div class="form-group">
+		<label for="tag3">Tag 3</label>
+		<input type="text" name="DreamVM.Tags[2].TagName" class="form-control" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create Dream</button>
+</form>

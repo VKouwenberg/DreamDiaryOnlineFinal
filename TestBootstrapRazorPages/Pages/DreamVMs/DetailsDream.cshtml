@@ -1,0 +1,41 @@
+﻿@page "{id:int}"
+@model TestBootstrapRazorPages.Pages.DreamVMs.DetailsDreamModel
+@using TestBootstrapRazorPages.ViewModels
+
+@{
+	ViewData["Title"] = "Details Dream";
+}
+
+<h1>Details Dream</h1>
+
+<form method="post">
+	<input type="hidden" asp-for="Dream.Id" />
+
+	<div class="form-group">
+		<label asp-for="Dream.DreamName"></label>
+		<span>@Model.Dream.DreamName</span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.DreamText"></label>
+		<span>@Model.Dream.DreamText</span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.ReadableBy"></label>
+		<span>@Model.Dream.ReadableBy</span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Dream.Tags"></label>
+		@for (int i = 0; i < Model.Dream.Tags.Count; i++)
+		{
+			<span>@Model.Dream.Tags[i].TagName</span>
+		}
+	</div>
+
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Delete</button>
+		<a asp-page="/DreamVMs/Index" class="btn btn-primary">Back to Index</a>
+	</div>
+</form>
