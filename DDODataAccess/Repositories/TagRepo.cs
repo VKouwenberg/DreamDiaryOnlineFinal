@@ -43,8 +43,6 @@ public class TagRepo : DataAccessInterfaces.ITagRepository
 
         connection.Close();
 
-        Console.WriteLine("New Tag Id " + newTagId);
-
         return newTagId;
     }
 

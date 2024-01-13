@@ -24,20 +24,9 @@ public class DreamService : LogicInterfaces.IDreamService
 
 	public Dream GetDreamById(int id)
 	{
-		Console.WriteLine("ID SEND TO RETRIEVE " + id);
 
 		DreamDTO dto = _dreamRepo.GetDreamById(id);
 
-		Console.WriteLine("DREAM RETRIEVED FROM DATABASE BY ID " + dto.DreamId);
-		Console.WriteLine(dto.DreamName);
-		if (dto.Tags != null && dto.Tags.Any()) 
-		{
-			foreach (TagDTO tag in dto.Tags)
-			{
-				Console.WriteLine(tag.TagName);
-			}
-		}
-		Console.WriteLine("READY TO MAP DREAMDTO TO DREAM LOGIC MODEL");
 		Dream dream = MapDreamDTOToDream(dto);
 		return dream;
 	}

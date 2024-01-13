@@ -157,15 +157,6 @@ public class DreamRepo : DataAccessInterfaces.IDreamRepository
 
     public void UpdateDream(DreamDTO dto)
     {
-        if (dto.Tags != null && dto.Tags.Any()) 
-        {
-            foreach (TagDTO tag in dto.Tags)
-            {
-                Console.WriteLine(tag.TagName);
-            }
-        }
-
-
 		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
