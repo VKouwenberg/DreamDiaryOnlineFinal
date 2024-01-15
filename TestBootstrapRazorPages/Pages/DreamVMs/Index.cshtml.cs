@@ -6,15 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TestBootstrapRazorPages.ViewModels;
 using TestBootstrapRazorPages.AppService;
-using TestBootstrapRazorPages.AppService.ViewInterfaces;
 
 namespace TestBootstrapRazorPages.Pages.DreamVMs;
 
 public class IndexModel : PageModel
 {
-    private readonly IDreamVMService _dreamVMService;
+    private readonly DreamVMService _dreamVMService;
 
-    public IndexModel(IDreamVMService context)
+    public IndexModel(DreamVMService context)
     {
         _dreamVMService = context;
     }
@@ -25,7 +24,7 @@ public class IndexModel : PageModel
 
     public IActionResult OnGet()
     {
-        Dreams = _dreamVMService.GetDreams();
+        Dreams = _dreamVMService.GetAllDreams();
         return Page();
     }
 

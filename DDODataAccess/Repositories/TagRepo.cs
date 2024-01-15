@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using DataAccessDDO.DatabaseSettings;
 using DataAccessDDO.ModelsDTO;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using LogicDDO.Services.DataAccessRepositoriesInterfaces;
@@ -13,7 +8,7 @@ using LogicDDO.Models;
 
 namespace DataAccessDDO.Repositories;
 
-public class TagRepo 
+public class TagRepo : ITagRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly RestRepo _restRepo;
@@ -23,11 +18,6 @@ public class TagRepo
     {
         _databaseSettings = databaseSettings.Value;
         _restRepo = restRepo;
-    }
-
-    public TagRepo()
-    {
-
     }
 
 	public int CreateTag(Tag tag)

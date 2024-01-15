@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogicDDO.Models.DataAccessModelInterfaces;
+using LogicDDO.Models;
 
 namespace LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 public interface IDreamRepository
 {
-	List<IDreamDTO> GetAllDreams();
-	void CreateDream(IDreamDTO dto);
-	void UpdateDream(IDreamDTO dto);
+	List<Dream> GetAllDreams();
+	void CreateDream(Dream dto);
+	void UpdateDream(Dream dto);
 	void DeleteDream(int id);
-	IDreamDTO GetDreamById(int id);
+	Dream GetDreamById(int id);
 }

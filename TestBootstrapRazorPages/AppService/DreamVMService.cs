@@ -2,18 +2,16 @@
 using TestBootstrapRazorPages.ViewModels;
 using LogicDDO.Models;
 using Microsoft.AspNetCore.Mvc;
-using TestBootstrapRazorPages.AppService.ViewInterfaces;
-using LogicDDO.Services.LogicInterfaces;
 
 namespace TestBootstrapRazorPages.AppService;
 
-public class DreamVMService : ViewInterfaces.IDreamVMService
+public class DreamVMService
 {
-    private readonly IDreamService _dreamService;
-    private readonly ITagVMService _tagVMService;
-	private readonly ITagService _tagService;
+    private readonly DreamService _dreamService;
+    private readonly TagVMService _tagVMService;
+	private readonly TagService _tagService;
 
-	public DreamVMService(IDreamService dreamService, ITagVMService tagVMService, ITagService tagService)
+	public DreamVMService(DreamService dreamService, TagVMService tagVMService, TagService tagService)
     {
         _dreamService = dreamService;
         _tagVMService = tagVMService;
@@ -23,9 +21,9 @@ public class DreamVMService : ViewInterfaces.IDreamVMService
     
 
     //Calls private mapping methods to create viemodels of DreamVM
-    public List<DreamVM> GetDreams()
+    public List<DreamVM> GetAllDreams()
     {
-        List<DreamVM> dreamVMs = MapLogicDreamsToDreamVMs(_dreamService.GetDreams());
+        List<DreamVM> dreamVMs = MapLogicDreamsToDreamVMs(_dreamService.GetAllDreams());
 
         return dreamVMs;
     }

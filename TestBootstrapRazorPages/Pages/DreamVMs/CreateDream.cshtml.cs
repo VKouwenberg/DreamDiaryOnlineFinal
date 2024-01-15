@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using TestBootstrapRazorPages.AppService;
 using TestBootstrapRazorPages.ViewModels;
-using TestBootstrapRazorPages.AppService.ViewInterfaces;
 
 namespace TestBootstrapRazorPages.Pages.DreamVMs
 {
@@ -12,9 +10,9 @@ namespace TestBootstrapRazorPages.Pages.DreamVMs
         public void OnGet()
         {
         }
-		private readonly IDreamVMService _dreamVMService;
+		private readonly DreamVMService _dreamVMService;
 
-		public CreateDreamModel(IDreamVMService dreamVMService)
+		public CreateDreamModel(DreamVMService dreamVMService)
 		{
 			_dreamVMService = dreamVMService;
 		}

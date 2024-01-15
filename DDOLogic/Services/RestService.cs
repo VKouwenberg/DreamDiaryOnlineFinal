@@ -8,7 +8,7 @@ using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 namespace LogicDDO.Services;
 
-public class RestService : LogicInterfaces.IRestService
+public class RestService : IRestRepository
 {
     private readonly IRestRepository _restRepo;
 
@@ -17,5 +17,18 @@ public class RestService : LogicInterfaces.IRestService
         _restRepo = restRepo;
     }
 
+	public void CreateRest(int tagId, int dreamId)
+	{
+		_restRepo.CreateRest(tagId, dreamId);
+	}
 
+	public void DeleteRestByDreamId(int dreamId)
+	{
+		_restRepo.DeleteRestByDreamId(dreamId);
+	}
+
+	public void DeleteRestByTagIdAndDreamId(int tagId, int dreamId)
+	{
+		_restRepo.DeleteRestByTagIdAndDreamId(tagId, dreamId);
+	}
 }

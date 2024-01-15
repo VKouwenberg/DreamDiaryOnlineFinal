@@ -4,9 +4,6 @@ using LogicDDO.Services;
 using DataAccessDDO;
 using DataAccessDDO.Repositories;
 using DataAccessDDO.DatabaseSettings;
-using LogicDDO.Services.LogicInterfaces;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
-using TestBootstrapRazorPages.AppService.ViewInterfaces;
 
 namespace TestBootstrapRazorPages;
 
@@ -21,9 +18,6 @@ public static class ServiceExtensions
 
         //DatabaseSettings
         services.Configure<DatabaseSettings>(configuration.GetSection("ConnectionStrings"));
-
-		//Inject both the interface and the repo itself
-        //Adding it scoped means you require both to be added
 
 		//from data access layer
 		services.AddScoped<ITagRepository, TagRepo>();

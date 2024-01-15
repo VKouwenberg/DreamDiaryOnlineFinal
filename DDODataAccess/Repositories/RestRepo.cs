@@ -1,17 +1,13 @@
 ﻿using DataAccessDDO.ModelsDTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessDDO.DatabaseSettings;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class RestRepo
+public class RestRepo : IRestRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
 

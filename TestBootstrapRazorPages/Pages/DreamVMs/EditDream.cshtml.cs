@@ -2,15 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TestBootstrapRazorPages.ViewModels;
 using TestBootstrapRazorPages.AppService;
-using TestBootstrapRazorPages.AppService.ViewInterfaces;
 
 namespace TestBootstrapRazorPages.Pages.DreamVMs
 {
     public class EditDreamModel : PageModel
     {
-        private readonly IDreamVMService _dreamVMService;
+        private readonly DreamVMService _dreamVMService;
 
-        public EditDreamModel(IDreamVMService dreamVMService)
+        public EditDreamModel(DreamVMService dreamVMService)
         {
             _dreamVMService = dreamVMService;
         }

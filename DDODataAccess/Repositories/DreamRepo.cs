@@ -3,11 +3,12 @@ using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using LogicDDO.Models;
 using LogicDDO.Services;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 
 namespace DataAccessDDO.Repositories;
 
-public class DreamRepo
+public class DreamRepo : IDreamRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly TagRepo _tagRepo;
@@ -191,7 +192,7 @@ public class DreamRepo
                 if (!string.IsNullOrWhiteSpace(tag.TagName))
                 {
 					//create the tag itself
-					int newTagId = _tagRepo.CreateTag(tag);
+					int newTagId = _tagRepo.CreateTag(_tagRepo.MapTagDTOToTag(tag));
 
 					//link the tag and the dreamId in a new rest
 					_restRepo.CreateRest(newTagId, dto.DreamId);
