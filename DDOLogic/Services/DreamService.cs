@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessDDO.ModelsDTO;
-using DataAccessDDO.Repositories;
-using LogicDDO.Services.LogicInterfaces;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 namespace LogicDDO.Services;
 
-public class DreamService : LogicInterfaces.IDreamService
+public class DreamService : IDreamRepository
 {
 	private readonly IDreamRepository _dreamRepo;
-	private readonly ITagService _tagService;
+	private readonly TagService _tagService;
 
-	public DreamService(IDreamRepository dreamRepo, ITagService tagService)
+	public DreamService(IDreamRepository dreamRepo, TagService tagService)
 	{
 		_dreamRepo = dreamRepo;
 		_tagService = tagService;

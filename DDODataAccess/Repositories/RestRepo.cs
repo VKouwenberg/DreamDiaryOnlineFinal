@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataAccessDDO.Repositories;
 
-public class RestRepo : DataAccessInterfaces.IRestRepository
+public class RestRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
 

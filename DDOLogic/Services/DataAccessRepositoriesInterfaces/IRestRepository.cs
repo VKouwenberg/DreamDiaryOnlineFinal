@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessDDO.ModelsDTO;
+using LogicDDO.Models.DataAccessModelInterfaces;
 
-namespace DataAccessDDO.Repositories.DataAccessInterfaces;
+namespace LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 public interface IRestRepository
 {

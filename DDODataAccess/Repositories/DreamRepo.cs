@@ -1,34 +1,28 @@
-﻿using DataAccessDDO.DatabaseSettings;
-using DataAccessDDO.ModelsDTO;
+﻿using DataAccessDDO.ModelsDTO;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using DataAccessDDO.Repositories;
-using Azure;
-using System.IO;
-using Org.BouncyCastle.Utilities.IO;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
+using LogicDDO.Models;
+using LogicDDO.Services;
+
 
 namespace DataAccessDDO.Repositories;
 
-public class DreamRepo : DataAccessInterfaces.IDreamRepository
+public class DreamRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly ITagRepository _tagRepo;
-    private readonly IRestRepository _restRepo;
+    private readonly TagRepo _tagRepo;
+    private readonly RestRepo _restRepo;
 
     public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
-        ITagRepository tagRepo,
-        IRestRepository restRepo)
+        TagRepo tagRepo,
+        RestRepo restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _tagRepo = tagRepo;
         _restRepo = restRepo;
     }
 
-    public List<DreamDTO> GetAllDreams()
+    public List<Dream> GetAllDreams()
     {
         List<DreamDTO> dreams = new List<DreamDTO>();
 
@@ -78,12 +72,18 @@ public class DreamRepo : DataAccessInterfaces.IDreamRepository
         }
         connection.Close();
 
-        return dreams;
+		List<Dream> convertedDreams = new List<Dream>();
+
+        convertedDreams = MapDreamDTOsToDreams(dreams);
+
+		return convertedDreams;
     }
 
-    public void CreateDream(DreamDTO dto)
+    public void CreateDream(Dream dream)
     {
-        using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		DreamDTO dto = MapDreamToDreamDTO(dream);
+
+		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
 
@@ -155,8 +155,10 @@ public class DreamRepo : DataAccessInterfaces.IDreamRepository
         connection.Close();
     }
 
-    public void UpdateDream(DreamDTO dto)
+    public void UpdateDream(Dream dream)
     {
+        DreamDTO dto = MapDreamToDreamDTO(dream);
+
 		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
@@ -275,5 +277,51 @@ public class DreamRepo : DataAccessInterfaces.IDreamRepository
         connection.Close();
 
         return dto;
+    }
+
+    private DreamDTO MapDreamToDreamDTO(Dream dream)
+    {
+        DreamDTO dto = new DreamDTO
+        {
+            DreamId = dream.DreamId,
+            DreamName = dream.DreamName,
+            DreamText = dream.DreamText
+        };
+        return dto;
+    }
+
+    private List<DreamDTO> MapDreamsToDreamDTOs(List<Dream> dreams)
+    {
+        List<DreamDTO> dTOs = new List<DreamDTO>();
+        foreach (Dream dream in dreams)
+        {
+            DreamDTO dto = MapDreamToDreamDTO(dream);
+            dTOs.Add(dto);
+        }
+        return dTOs;
+    }
+
+    private Dream MapDreamDTOToDream(DreamDTO dto)
+    {
+        Dream dream = new Dream
+        {
+            DreamId= dto.DreamId,
+            DreamName = dto.DreamName,
+            DreamText = dto.DreamText,
+            ReadableBy = dto.ReadableBy,
+            Tags = _tagRepo.MapTagDTOsToTags(dto.Tags)
+        };
+        return dream;
+    }
+
+    private List<Dream> MapDreamDTOsToDreams(List<DreamDTO> dreamDTOs)
+    {
+        List<Dream> dreams = new List<Dream>();
+        foreach (DreamDTO dto in dreamDTOs)
+        {
+            Dream dream = MapDreamDTOToDream(dto);
+            dreams.Add(dream);
+        }
+        return dreams;
     }
 }

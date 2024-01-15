@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessDDO.ModelsDTO;
+using LogicDDO.Models.DataAccessModelInterfaces;
+using LogicDDO.Models;
 
-namespace DataAccessDDO.Repositories.DataAccessInterfaces;
+namespace LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 public interface ITagRepository
 {
-	int CreateTag(TagDTO dto);
+	int CreateTag(Tag tag);
 	void DeleteDreamTags(int dreamId);
 	void DeleteTagsByDreamId(int dreamId);
 }

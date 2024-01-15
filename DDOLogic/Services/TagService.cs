@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessDDO.ModelsDTO;
-using DataAccessDDO.Repositories;
 using LogicDDO.Models;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 namespace LogicDDO.Services;
 
-public class TagService : LogicInterfaces.ITagService
+public class TagService : ITagRepository
 {
     private readonly ITagRepository _tagRepo;
 
@@ -34,7 +32,7 @@ public class TagService : LogicInterfaces.ITagService
     {
         List<Tag> tags = new List<Tag>();
 
-        foreach (TagDTO dto in dTOs)
+        foreach (ITagDTO dto in dTOs)
         {
             Tag tag = MapTagDTOToTag(dto);
             tags.Add(tag);
@@ -44,7 +42,7 @@ public class TagService : LogicInterfaces.ITagService
     }
 	public TagDTO MapTagToTagDTO(Tag tag)
 	{
-		TagDTO dto = new TagDTO
+		TagDTO dto = new LogicDDO.Models.DataAccessModelInterfaces.ITagDTO
 		{
 			TagId = tag.TagId,
 			TagName = tag.TagName
@@ -59,10 +57,25 @@ public class TagService : LogicInterfaces.ITagService
 
         foreach (Tag tag in tags)
         {
-            TagDTO dto = MapTagToTagDTO(tag);
+            ITagDTO dto = MapTagToTagDTO(tag);
             dTOs.Add(dto);
         }
 
         return dTOs;
     }
+
+	public int CreateTag(TagDTO dto)
+	{
+		return _tagRepo.CreateTag(dto);
+	}
+
+	public void DeleteDreamTags(int dreamId)
+	{
+		_tagRepo.DeleteDreamTags(dreamId);
+	}
+
+	public void DeleteTagsByDreamId(int dreamId)
+	{
+		_tagRepo.DeleteTagsByDreamId(dreamId);
+	}
 }

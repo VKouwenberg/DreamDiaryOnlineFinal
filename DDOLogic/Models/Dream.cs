@@ -1,5 +1,5 @@
-﻿using DataAccessDDO.ModelsDTO;
-using LogicDDO.Models;
+﻿using LogicDDO.Models;
+using LogicDDO.Models.DataAccessModelInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LogicDDO.Models;
-public class Dream
+public class Dream : IDreamDTO
 {
 	public int DreamId { get; set; }
 	public string DreamName { get; set; }

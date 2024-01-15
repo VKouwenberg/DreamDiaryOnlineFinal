@@ -8,17 +8,18 @@ using DataAccessDDO.ModelsDTO;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
+using LogicDDO.Models;
 
 namespace DataAccessDDO.Repositories;
 
-public class TagRepo : DataAccessInterfaces.ITagRepository
+public class TagRepo 
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly IRestRepository _restRepo;
+    private readonly RestRepo _restRepo;
 
     public TagRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings, 
-        IRestRepository restRepo)
+        RestRepo restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _restRepo = restRepo;
@@ -29,22 +30,24 @@ public class TagRepo : DataAccessInterfaces.ITagRepository
 
     }
 
-    public int CreateTag(TagDTO dto)
-    {
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
+	public int CreateTag(Tag tag)
+	{
+        TagDTO dto = MapTagToTagDTO(tag);
 
-        string query = "INSERT INTO Tag (TagName) VALUES (@TagName); SELECT LAST_INSERT_ID()";
+		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+		connection.Open();
 
-        using MySqlCommand command = new MySqlCommand(query, connection);
-        command.Parameters.AddWithValue("@TagName", dto.TagName);
+		string query = "INSERT INTO Tag (TagName) VALUES (@TagName); SELECT LAST_INSERT_ID()";
 
-        int newTagId = Convert.ToInt32(command.ExecuteScalar());
+		using MySqlCommand command = new MySqlCommand(query, connection);
+		command.Parameters.AddWithValue("@TagName", dto.TagName);
 
-        connection.Close();
+		int newTagId = Convert.ToInt32(command.ExecuteScalar());
 
-        return newTagId;
-    }
+		connection.Close();
+
+		return newTagId;
+	}
 
     public void DeleteDreamTags(int dreamId)
     {
@@ -79,5 +82,47 @@ public class TagRepo : DataAccessInterfaces.ITagRepository
         deleteTagsCommand.ExecuteNonQuery();
 
         connection.Close();
+    }
+
+    public TagDTO MapTagToTagDTO(Tag tag)
+    {
+        TagDTO tagDTO = new TagDTO
+        {
+            TagId = tag.TagId,
+            TagName = tag.TagName
+        };   
+        return tagDTO;
+    }
+
+    public List<TagDTO> MapTagsToTagDTOs(List<Tag> tags)
+    {
+        List<TagDTO> tagDTOs = new List<TagDTO>();
+        foreach (Tag tag in tags)
+        {
+            TagDTO dto = MapTagToTagDTO(tag);
+            tagDTOs.Add(dto);
+        }
+        return tagDTOs;
+    }
+
+    public Tag MapTagDTOToTag(TagDTO dto)
+    {
+        Tag tag = new Tag
+        {
+            TagId = dto.TagId,
+            TagName = dto.TagName
+        };
+        return tag;
+    }
+
+    public List<Tag> MapTagDTOsToTags(List<TagDTO> dTOs)
+    {
+        List<Tag> tags = new List<Tag>();
+        foreach (TagDTO tagDTO in dTOs)
+        {
+            Tag tag = MapTagDTOToTag(tagDTO);
+            tags.Add(tag); 
+        }
+        return tags;
     }
 }

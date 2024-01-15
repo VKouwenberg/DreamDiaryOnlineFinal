@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessDDO.ModelsDTO;
-using DataAccessDDO.Repositories;
-using LogicDDO.Services.LogicInterfaces;
-using DataAccessDDO.Repositories.DataAccessInterfaces;
+using LogicDDO.Models;
+using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 
 namespace LogicDDO.Services;
 
