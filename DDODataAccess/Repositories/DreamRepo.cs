@@ -194,7 +194,10 @@ public class DreamRepo : IDreamRepository, IDreamRepo
                 if (!string.IsNullOrWhiteSpace(tag.TagName))
                 {
 					//create the tag itself
-					int newTagId = _tagRepo.CreateTag(_tagRepo.MapTagDTOToTagDTOLogic(tag));
+                    TagDTOLogic tagDTOLogic = new TagDTOLogic();
+                    tagDTOLogic = _tagRepo.MapTagDTOToTagDTOLogic(tag);
+
+					int newTagId = _tagRepo.CreateTag(tagDTOLogic);
 
 					//link the tag and the dreamId in a new rest
 					_restRepo.CreateRest(newTagId, dto.DreamId);

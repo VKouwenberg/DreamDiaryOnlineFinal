@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TestBootstrapRazorPages.AppService;
 using TestBootstrapRazorPages.ViewModels;
+using TestBootstrapRazorPages.AppService.ViewAppServicesInterfaces;
 
 namespace TestBootstrapRazorPages.Pages.DreamVMs
 {
     public class DetailsDreamModel : PageModel
     {
-		private readonly DreamVMService _dreamVMService;
+		private readonly IDreamVMService _dreamVMService;
 
-		public DetailsDreamModel(DreamVMService dreamVMService)
+		public DetailsDreamModel(IDreamVMService dreamVMService)
 		{
 			_dreamVMService = dreamVMService;
 		}
