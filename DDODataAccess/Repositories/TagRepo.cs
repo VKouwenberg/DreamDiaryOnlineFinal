@@ -5,24 +5,26 @@ using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using LogicDDO.Services.DataAccessRepositoriesInterfaces;
 using LogicDDO.Models;
+using LogicDDO.ModelsDataAccessDTOs;
+using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class TagRepo : ITagRepository
+public class TagRepo : ITagRepository, ITagRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly RestRepo _restRepo;
+    private readonly IRestRepo _restRepo;
 
     public TagRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings, 
-        RestRepo restRepo)
+        IRestRepo restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _restRepo = restRepo;
     }
 
-	public int CreateTag(Tag tag)
+	public int CreateTag(TagDTOLogic tag)
 	{
-        TagDTO dto = MapTagToTagDTO(tag);
+        TagDTO dto = MapTagDTOLogicToTagDTO(tag);
 
 		MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 		connection.Open();
@@ -74,7 +76,8 @@ public class TagRepo : ITagRepository
         connection.Close();
     }
 
-    public TagDTO MapTagToTagDTO(Tag tag)
+    //mapping
+    public TagDTO MapTagDTOLogicToTagDTO(TagDTOLogic tag)
     {
         TagDTO tagDTO = new TagDTO
         {
@@ -84,20 +87,20 @@ public class TagRepo : ITagRepository
         return tagDTO;
     }
 
-    public List<TagDTO> MapTagsToTagDTOs(List<Tag> tags)
+    public List<TagDTO> MapTagDTOLogicsToTagDTOs(List<TagDTOLogic> tags)
     {
         List<TagDTO> tagDTOs = new List<TagDTO>();
-        foreach (Tag tag in tags)
+        foreach (TagDTOLogic tag in tags)
         {
-            TagDTO dto = MapTagToTagDTO(tag);
+            TagDTO dto = MapTagDTOLogicToTagDTO(tag);
             tagDTOs.Add(dto);
         }
         return tagDTOs;
     }
 
-    public Tag MapTagDTOToTag(TagDTO dto)
+    public TagDTOLogic MapTagDTOToTagDTOLogic(TagDTO dto)
     {
-        Tag tag = new Tag
+        TagDTOLogic tag = new TagDTOLogic
         {
             TagId = dto.TagId,
             TagName = dto.TagName
@@ -105,12 +108,12 @@ public class TagRepo : ITagRepository
         return tag;
     }
 
-    public List<Tag> MapTagDTOsToTags(List<TagDTO> dTOs)
+    public List<TagDTOLogic> MapTagDTOsToTagDTOLogics(List<TagDTO> dTOs)
     {
-        List<Tag> tags = new List<Tag>();
+        List<TagDTOLogic> tags = new List<TagDTOLogic>();
         foreach (TagDTO tagDTO in dTOs)
         {
-            Tag tag = MapTagDTOToTag(tagDTO);
+            TagDTOLogic tag = MapTagDTOToTagDTOLogic(tagDTO);
             tags.Add(tag); 
         }
         return tags;

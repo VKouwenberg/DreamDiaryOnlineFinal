@@ -4,10 +4,12 @@ using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using LogicDDO.Services.DataAccessRepositoriesInterfaces;
+using LogicDDO.ModelsDataAccessDTOs;
+using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class RestRepo : IRestRepository
+public class RestRepo : IRestRepository, IRestRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
 

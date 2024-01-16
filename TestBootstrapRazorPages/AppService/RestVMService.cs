@@ -1,14 +1,16 @@
 ﻿using LogicDDO.Services;
-using TestBootstrapRazorPages.ViewModels;
 using LogicDDO.Models;
+using LogicDDO.Services.LogicServicesInterfaces;
+using TestBootstrapRazorPages.AppService.ViewAppServicesInterfaces;
+using TestBootstrapRazorPages.ViewModels;
 
 namespace TestBootstrapRazorPages.AppService;
 
-public class RestVMService
+public class RestVMService : IRestVMService
 {
-    private readonly RestService _restService;
+    private readonly IRestService _restService;
 
-    public RestVMService(RestService restService)
+    public RestVMService(IRestService restService)
     {
         _restService = restService;
     }

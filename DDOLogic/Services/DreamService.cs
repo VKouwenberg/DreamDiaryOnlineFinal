@@ -5,28 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LogicDDO.Services.DataAccessRepositoriesInterfaces;
+using LogicDDO.Services.LogicServicesInterfaces;
+using LogicDDO.ModelsDataAccessDTOs;
 
 namespace LogicDDO.Services;
 
-public class DreamService : IDreamRepository
+public class DreamService : IDreamService
 {
 	private readonly IDreamRepository _dreamRepo;
-	private readonly TagService _tagService;
+	private readonly ITagService _tagService;
 
-	public DreamService(IDreamRepository dreamRepo, TagService tagService)
+	public DreamService(IDreamRepository dreamRepo, ITagService tagService)
 	{
 		_dreamRepo = dreamRepo;
 		_tagService = tagService;
 	}
 
+	public List<Dream> GetAllDreams()
+	{
+		List<Dream> dreams = new List<Dream>();
+		List<DreamDTOLogic> dreamDTOs = new List<DreamDTOLogic>();
+
+		dreamDTOs = _dreamRepo.GetAllDreams();
+		dreams = MapDreamDTOLogicsToDreams(dreamDTOs);
+
+		return dreams;
+	}
+
 	public Dream GetDreamById(int id)
 	{
-		return _dreamRepo.GetDreamById(id);
+		Dream dream = new Dream();
+		DreamDTOLogic dreamDTO = new DreamDTOLogic();
+
+		dreamDTO = _dreamRepo.GetDreamById(id);
+		dream = MapDreamDTOLogicToDream(dreamDTO);
+
+		return dream;
 	}
 
 	public void CreateDream(Dream dream)
 	{
-		_dreamRepo.CreateDream(dream);
+		DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
+		_dreamRepo.CreateDream(dreamDTO);
 	}
 
 	public void DeleteDream(int id)
@@ -36,11 +56,55 @@ public class DreamService : IDreamRepository
 
 	public void UpdateDream(Dream dream)
 	{
-		_dreamRepo.UpdateDream(dream);
+		DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
+		_dreamRepo.UpdateDream(dreamDTO);
 	}
 
-	public List<Dream> GetAllDreams()
+	//mapping logic
+	public Dream MapDreamDTOLogicToDream(DreamDTOLogic dreamDTO)
 	{
-		return _dreamRepo.GetAllDreams();
+		Dream dream = new Dream
+		{
+			DreamId = dreamDTO.DreamId,
+			DreamName = dreamDTO.DreamName,
+			DreamText = dreamDTO.DreamText,
+			ReadableBy = dreamDTO.ReadableBy,
+			Tags = _tagService.MapTagDTOLogicsToTags(dreamDTO.Tags)
+		};
+		return dream;
+	}
+	public List<Dream> MapDreamDTOLogicsToDreams(List<DreamDTOLogic> dreamDTOs)
+	{
+		List<Dream> dreams = new List<Dream>();
+		foreach (DreamDTOLogic dreamDTO in dreamDTOs)
+		{
+			Dream dream = MapDreamDTOLogicToDream(dreamDTO);
+			dreams.Add(dream);
+		}
+		return dreams;
+	}
+
+	public DreamDTOLogic MapDreamToDreamDTOLogic(Dream dream)
+	{
+		DreamDTOLogic dreamDTO = new DreamDTOLogic
+		{
+			DreamId = dream.DreamId,
+			DreamName = dream.DreamName,
+			DreamText = dream.DreamText,
+			ReadableBy = dream.ReadableBy,
+			Tags = _tagService.MapTagsToTagDTOLogics(dream.Tags)
+		};
+		return dreamDTO;
+	}
+
+	public List<DreamDTOLogic> MapDreamsToDreamDTOLogics(List<Dream> dreams)
+	{
+		List<DreamDTOLogic> dreamDTOs = new List<DreamDTOLogic>();
+		foreach (Dream dream in dreams)
+		{
+			DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
+			dreamDTOs.Add(dreamDTO);
+		}
+		return dreamDTOs;
 	}
 }

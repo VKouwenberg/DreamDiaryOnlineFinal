@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogicDDO.Models;
+using DataAccessDDO.Repositories;
+using DataAccessDDO.ModelsDTO;
 using LogicDDO.ModelsDataAccessDTOs;
 
-namespace LogicDDO.Services.DataAccessRepositoriesInterfaces;
+namespace DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
-public interface IRestRepository
+public interface IRestRepo
 {
 	void CreateRest(int tagId, int dreamId);
 	void DeleteRestByDreamId(int dreamId);

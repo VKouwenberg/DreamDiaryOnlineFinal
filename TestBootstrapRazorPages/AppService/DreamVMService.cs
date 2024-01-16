@@ -1,17 +1,21 @@
 ﻿using LogicDDO.Services;
 using TestBootstrapRazorPages.ViewModels;
 using LogicDDO.Models;
+using LogicDDO.Services.LogicServicesInterfaces;
+using LogicDDO.ModelsDataAccessDTOs;
+using TestBootstrapRazorPages.AppService.ViewAppServicesInterfaces;
+using TestBootstrapRazorPages.AppService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestBootstrapRazorPages.AppService;
 
-public class DreamVMService
+public class DreamVMService : IDreamVMService
 {
-    private readonly DreamService _dreamService;
-    private readonly TagVMService _tagVMService;
-	private readonly TagService _tagService;
+    private readonly IDreamService _dreamService;
+    private readonly ITagVMService _tagVMService;
+	private readonly ITagService _tagService;
 
-	public DreamVMService(DreamService dreamService, TagVMService tagVMService, TagService tagService)
+	public DreamVMService(IDreamService dreamService, ITagVMService tagVMService, ITagService tagService)
     {
         _dreamService = dreamService;
         _tagVMService = tagVMService;
@@ -20,10 +24,14 @@ public class DreamVMService
 
     
 
-    //Calls private mapping methods to create viemodels of DreamVM
+    //Calls mapping methods to create viemodels of DreamVM
     public List<DreamVM> GetAllDreams()
     {
-        List<DreamVM> dreamVMs = MapLogicDreamsToDreamVMs(_dreamService.GetAllDreams());
+        List<Dream> dreams = new List<Dream>();
+        List<DreamVM> dreamVMs = new List<DreamVM>();
+
+        dreams = _dreamService.GetAllDreams();
+        dreamVMs = MapLogicDreamsToDreamVMs(dreams);
 
         return dreamVMs;
     }
@@ -48,6 +56,7 @@ public class DreamVMService
     {
         Dream dream = MapDreamVMToDream(dreamVM);
 
+
         _dreamService.UpdateDream(dream);
     }
 
@@ -58,7 +67,7 @@ public class DreamVMService
 
 
     //private method that controls the conversion to only happen here
-    private Dream MapDreamVMToDream(DreamVM dreamVM)
+    public Dream MapDreamVMToDream(DreamVM dreamVM)
     {
         Dream dream = new Dream
         {
@@ -76,7 +85,7 @@ public class DreamVMService
     }
 
 	//2 methods convert logic models to ViewModels
-	private List<DreamVM> MapLogicDreamsToDreamVMs(List<Dream> dreams)
+	public List<DreamVM> MapLogicDreamsToDreamVMs(List<Dream> dreams)
 	{
 
 
@@ -93,7 +102,7 @@ public class DreamVMService
 		return dreamVMs;
 	}
 
-	private DreamVM MapLogicDreamtoDreamVM(Dream dream)
+	public DreamVM MapLogicDreamtoDreamVM(Dream dream)
 	{
 		DreamVM dreamVM = new DreamVM
 		{

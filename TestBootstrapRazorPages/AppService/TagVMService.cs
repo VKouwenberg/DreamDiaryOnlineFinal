@@ -1,14 +1,16 @@
 ﻿using LogicDDO.Services;
-using TestBootstrapRazorPages.ViewModels;
 using LogicDDO.Models;
+using LogicDDO.Services.LogicServicesInterfaces;
+using TestBootstrapRazorPages.ViewModels;
+using TestBootstrapRazorPages.AppService.ViewAppServicesInterfaces;
 
 namespace TestBootstrapRazorPages.AppService;
 
-public class TagVMService
+public class TagVMService : ITagVMService
 {
-    private readonly TagService _tagService;
+    private readonly ITagService _tagService;
 
-    public TagVMService(TagService tagService)
+    public TagVMService(ITagService tagService)
     {
         _tagService = tagService;
     }

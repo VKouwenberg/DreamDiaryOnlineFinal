@@ -2,28 +2,30 @@
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using LogicDDO.Models;
+using LogicDDO.ModelsDataAccessDTOs;
 using LogicDDO.Services;
 using LogicDDO.Services.DataAccessRepositoriesInterfaces;
+using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 
 namespace DataAccessDDO.Repositories;
 
-public class DreamRepo : IDreamRepository
+public class DreamRepo : IDreamRepository, IDreamRepo
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly TagRepo _tagRepo;
-    private readonly RestRepo _restRepo;
+    private readonly ITagRepo _tagRepo;
+    private readonly IRestRepo _restRepo;
 
     public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
-        TagRepo tagRepo,
-        RestRepo restRepo)
+        ITagRepo tagRepo,
+        IRestRepo restRepo)
     {
         _databaseSettings = databaseSettings.Value;
         _tagRepo = tagRepo;
         _restRepo = restRepo;
     }
 
-    public List<Dream> GetAllDreams()
+    public List<DreamDTOLogic> GetAllDreams()
     {
         List<DreamDTO> dreams = new List<DreamDTO>();
 
@@ -73,16 +75,16 @@ public class DreamRepo : IDreamRepository
         }
         connection.Close();
 
-		List<Dream> convertedDreams = new List<Dream>();
+		List<DreamDTOLogic> convertedDreams = new List<DreamDTOLogic>();
 
-        convertedDreams = MapDreamDTOsToDreams(dreams);
+        convertedDreams = MapDreamDTOsToDreamDTOLogics(dreams);
 
 		return convertedDreams;
     }
 
-    public void CreateDream(Dream dream)
+    public void CreateDream(DreamDTOLogic dream)
     {
-		DreamDTO dto = MapDreamToDreamDTO(dream);
+		DreamDTO dto = MapDreamDTOLogicToDreamDTO(dream);
 
 		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
@@ -156,9 +158,9 @@ public class DreamRepo : IDreamRepository
         connection.Close();
     }
 
-    public void UpdateDream(Dream dream)
+    public void UpdateDream(DreamDTOLogic dream)
     {
-        DreamDTO dto = MapDreamToDreamDTO(dream);
+        DreamDTO dto = MapDreamDTOLogicToDreamDTO(dream);
 
 		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
@@ -192,7 +194,7 @@ public class DreamRepo : IDreamRepository
                 if (!string.IsNullOrWhiteSpace(tag.TagName))
                 {
 					//create the tag itself
-					int newTagId = _tagRepo.CreateTag(_tagRepo.MapTagDTOToTag(tag));
+					int newTagId = _tagRepo.CreateTag(_tagRepo.MapTagDTOToTagDTOLogic(tag));
 
 					//link the tag and the dreamId in a new rest
 					_restRepo.CreateRest(newTagId, dto.DreamId);
@@ -226,7 +228,7 @@ public class DreamRepo : IDreamRepository
         connection.Close();
 	}
 
-    public DreamDTO GetDreamById(int dreamId)
+    public DreamDTOLogic GetDreamById(int dreamId)
     {
         DreamDTO dto = null;
 
@@ -277,10 +279,13 @@ public class DreamRepo : IDreamRepository
         }
         connection.Close();
 
-        return dto;
+        DreamDTOLogic convertedDTO = MapDreamDTOToDreamDTOLogic(dto);
+
+        return convertedDTO;
     }
 
-    private DreamDTO MapDreamToDreamDTO(Dream dream)
+    //mapping
+    public DreamDTO MapDreamDTOLogicToDreamDTO(DreamDTOLogic dream)
     {
         DreamDTO dto = new DreamDTO
         {
@@ -291,36 +296,36 @@ public class DreamRepo : IDreamRepository
         return dto;
     }
 
-    private List<DreamDTO> MapDreamsToDreamDTOs(List<Dream> dreams)
+    public List<DreamDTO> MapDreamDTOLogicsToDreamDTOs(List<DreamDTOLogic> dreams)
     {
         List<DreamDTO> dTOs = new List<DreamDTO>();
-        foreach (Dream dream in dreams)
+        foreach (DreamDTOLogic dream in dreams)
         {
-            DreamDTO dto = MapDreamToDreamDTO(dream);
+            DreamDTO dto = MapDreamDTOLogicToDreamDTO(dream);
             dTOs.Add(dto);
         }
         return dTOs;
     }
 
-    private Dream MapDreamDTOToDream(DreamDTO dto)
+    public DreamDTOLogic MapDreamDTOToDreamDTOLogic(DreamDTO dto)
     {
-        Dream dream = new Dream
+        DreamDTOLogic dream = new DreamDTOLogic
         {
             DreamId= dto.DreamId,
             DreamName = dto.DreamName,
             DreamText = dto.DreamText,
             ReadableBy = dto.ReadableBy,
-            Tags = _tagRepo.MapTagDTOsToTags(dto.Tags)
+            Tags = _tagRepo.MapTagDTOsToTagDTOLogics(dto.Tags)
         };
         return dream;
     }
 
-    private List<Dream> MapDreamDTOsToDreams(List<DreamDTO> dreamDTOs)
+    public List<DreamDTOLogic> MapDreamDTOsToDreamDTOLogics(List<DreamDTO> dreamDTOs)
     {
-        List<Dream> dreams = new List<Dream>();
+        List<DreamDTOLogic> dreams = new List<DreamDTOLogic>();
         foreach (DreamDTO dto in dreamDTOs)
         {
-            Dream dream = MapDreamDTOToDream(dto);
+            DreamDTOLogic dream = MapDreamDTOToDreamDTOLogic(dto);
             dreams.Add(dream);
         }
         return dreams;
