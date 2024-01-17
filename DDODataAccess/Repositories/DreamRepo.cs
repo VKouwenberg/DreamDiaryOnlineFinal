@@ -1,4 +1,5 @@
 ﻿using DataAccessDDO.ModelsDTO;
+using DataAccessDDO.DatabaseConfiguration;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using LogicDDO.Models;
@@ -12,6 +13,8 @@ namespace DataAccessDDO.Repositories;
 
 public class DreamRepo : IDreamRepository, IDreamRepo
 {
+    private readonly DatabaseContext _databaseContext;
+
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
     private readonly ITagRepo _tagRepo;
     private readonly IRestRepo _restRepo;
@@ -20,7 +23,9 @@ public class DreamRepo : IDreamRepository, IDreamRepo
         ITagRepo tagRepo,
         IRestRepo restRepo)
     {
-        _databaseSettings = databaseSettings.Value;
+        _databaseContext = new DatabaseContext();
+
+		_databaseSettings = databaseSettings.Value;
         _tagRepo = tagRepo;
         _restRepo = restRepo;
     }
@@ -29,8 +34,10 @@ public class DreamRepo : IDreamRepository, IDreamRepo
     {
         List<DreamDTO> dreams = new List<DreamDTO>();
 
-        MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();
+        MySqlConnection connection = _databaseContext.GetConnection();
+
+        /*MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        connection.Open();*/
 
         string query = @"SELECT " +
             "dream.DreamId, " +

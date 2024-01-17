@@ -1,5 +1,5 @@
-﻿
-using DataAccessDDO.DatabaseSettings;
+﻿using DataAccessDDO.DatabaseSettings;
+using DataAccessDDO.DatabaseConfiguration;
 using DataAccessDDO.ModelsDTO;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
