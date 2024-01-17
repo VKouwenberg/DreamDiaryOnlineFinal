@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicDDO", "..\DDOLogic\Log
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBootstrapRazorPages", "..\TestBootstrapRazorPages\TestBootstrapRazorPages.csproj", "{F24116E6-80D6-452C-9CF9-D96919D4086D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DreamDiaryOnlineTesting", "..\DreamDiaryOnlineTesting\DreamDiaryOnlineTesting.csproj", "{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F24116E6-80D6-452C-9CF9-D96919D4086D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F24116E6-80D6-452C-9CF9-D96919D4086D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F24116E6-80D6-452C-9CF9-D96919D4086D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
