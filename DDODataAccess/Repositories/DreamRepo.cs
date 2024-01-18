@@ -34,59 +34,68 @@ public class DreamRepo : IDreamRepository, IDreamRepo
     {
         List<DreamDTO> dreams = new List<DreamDTO>();
 
-        MySqlConnection connection = _databaseContext.GetConnection();
-
-        /*MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
-        connection.Open();*/
-
-        string query = @"SELECT " +
-            "dream.DreamId, " +
-            "dream.DreamName, " +
-            "dream.DreamText, " +
-            "dream.ReadableBy, " +
-            "tag.TagId, " +
-            "tag.TagName " +
-            "FROM dream " +
-            "LEFT JOIN rest ON dream.DreamId = rest.DreamId " +
-            "LEFT JOIN tag ON rest.TagId = tag.TagId";
-
-        MySqlCommand command = new MySqlCommand(query, connection);
-        MySqlDataReader reader = command.ExecuteReader();
-
-        while (reader.Read())
+        try
         {
-            DreamDTO dto = dreams.FirstOrDefault(d => d.DreamId == Convert.ToInt32(reader["DreamId"]));
+            MySqlConnection connection = _databaseContext.GetConnection();
 
-            if (dto == null)
+
+            /*MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+            connection.Open();*/
+
+            string query = @"SELECT " +
+                "dream.DreamId, " +
+                "dream.DreamName, " +
+                "dream.DreamText, " +
+                "dream.ReadableBy, " +
+                "tag.TagId, " +
+                "tag.TagName " +
+                "FROM dream " +
+                "LEFT JOIN rest ON dream.DreamId = rest.DreamId " +
+                "LEFT JOIN tag ON rest.TagId = tag.TagId";
+
+            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
             {
-                dto = new DreamDTO
-                {
-                    DreamId = Convert.ToInt32(reader["DreamId"]),
-                    DreamName = reader["DreamName"].ToString(),
-                    DreamText = reader["DreamText"].ToString(),
-                    ReadableBy = reader["ReadableBy"].ToString(),
-                    Tags = new List<TagDTO>()
-                };
+                DreamDTO dto = dreams.FirstOrDefault(d => d.DreamId == Convert.ToInt32(reader["DreamId"]));
 
-                dreams.Add(dto);
-            }
-
-            if (reader["TagId"] != DBNull.Value)
-            {
-                dto.Tags.Add(new TagDTO
+                if (dto == null)
                 {
-                    TagId = Convert.ToInt32(reader["TagId"]),
-                    TagName = reader["TagName"].ToString()
-                });
+                    dto = new DreamDTO
+                    {
+                        DreamId = Convert.ToInt32(reader["DreamId"]),
+                        DreamName = reader["DreamName"].ToString(),
+                        DreamText = reader["DreamText"].ToString(),
+                        ReadableBy = reader["ReadableBy"].ToString(),
+                        Tags = new List<TagDTO>()
+                    };
+
+                    dreams.Add(dto);
+                }
+
+                if (reader["TagId"] != DBNull.Value)
+                {
+                    dto.Tags.Add(new TagDTO
+                    {
+                        TagId = Convert.ToInt32(reader["TagId"]),
+                        TagName = reader["TagName"].ToString()
+                    });
+                }
             }
+            connection.Close();
+
+            List<DreamDTOLogic> convertedDreams = new List<DreamDTOLogic>();
+
+            convertedDreams = MapDreamDTOsToDreamDTOLogics(dreams);
+
+            return convertedDreams;
         }
-        connection.Close();
-
-		List<DreamDTOLogic> convertedDreams = new List<DreamDTOLogic>();
-
-        convertedDreams = MapDreamDTOsToDreamDTOLogics(dreams);
-
-		return convertedDreams;
+        catch (Exception ex)
+        {
+            throw;
+        }
+        
     }
 
     public void CreateDream(DreamDTOLogic dream)

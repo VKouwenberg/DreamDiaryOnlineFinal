@@ -11,56 +11,67 @@
 
 <h1>Dreams</h1>
 
-<p>
-</p>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Dreams[0].DreamName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dreams[0].DreamText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dreams[0].ReadableBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dreams[0].Tags[0].TagName)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Dreams)
-        {
+@if (Model.Dreams != null && Model.Dreams.Any())
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DreamName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DreamText)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReadableBy)
-                </td>
-                <td>
-                    @if (item.Tags != null)
-                    {
-                        @foreach (TagVM tag in item.Tags)
-                        {
-                            <span>@tag.TagName</span>
-                        }
-                    }
-                </td>
-                <td>
-            <a asp-page="./EditDream" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-            <a asp-page="./DetailsDream" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-            <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" class="d-inline">
-                <button type="submit" class="btn btn-primary">Delete</button>
-            </form>
-            </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dreams[0].DreamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dreams[0].DreamText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dreams[0].ReadableBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dreams[0].Tags[0].TagName)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Dreams)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DreamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DreamText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReadableBy)
+                    </td>
+                    <td>
+                        @if (item.Tags != null)
+                        {
+                            @foreach (TagVM tag in item.Tags)
+                            {
+                                <span>@tag.TagName</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-page="./EditDream" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        <a asp-page="./DetailsDream" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" class="d-inline">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No dreams available</p>
+}

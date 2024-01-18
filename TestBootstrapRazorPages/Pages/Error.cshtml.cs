@@ -8,6 +8,7 @@ namespace TestBootstrapRazorPages.Pages
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
+        public string ErrorMessage { get; set; }
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
@@ -19,9 +20,10 @@ namespace TestBootstrapRazorPages.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(string errorMessage)
         {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            ErrorMessage = errorMessage;
+            //RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
     }
 }

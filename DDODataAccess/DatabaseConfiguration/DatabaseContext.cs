@@ -13,21 +13,15 @@ public class DatabaseContext
 
     public DatabaseContext()
     {
-		_connectionString = "Server=localhost;Database=ddodb;User Id=root;Password=;";
-	}
+        _connectionString = "Server=localhost;Database=ddodb;User Id=root;Password=;";
+    }
 
     public MySqlConnection GetConnection()
     {
         MySqlConnection connection = new MySqlConnection(_connectionString);
-        try
-        {
-            connection.Open();
-            return connection;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Error cannot connect to database", ex);
-        }
+
+        connection.Open();
+        return connection;
     }
 }
 
