@@ -13,13 +13,11 @@ public class DreamVMService : IDreamVMService
 {
     private readonly IDreamService _dreamService;
     private readonly ITagVMService _tagVMService;
-	private readonly ITagService _tagService;
 
-	public DreamVMService(IDreamService dreamService, ITagVMService tagVMService, ITagService tagService)
+	public DreamVMService(IDreamService dreamService, ITagVMService tagVMService)
     {
         _dreamService = dreamService;
         _tagVMService = tagVMService;
-        _tagService = tagService;
     }
 
     

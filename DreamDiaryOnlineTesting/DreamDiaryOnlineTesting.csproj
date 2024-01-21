@@ -28,4 +28,9 @@
     <ProjectReference Include="..\TestBootstrapRazorPages\TestBootstrapRazorPages.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccessDDOTests\" />
+    <Folder Include="LogicDDOTests\" />
+  </ItemGroup>
+
 </Project>

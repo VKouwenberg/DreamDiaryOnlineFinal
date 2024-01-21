@@ -1,15 +1,7 @@
 using MySql.Data.MySqlClient;
 using TestBootstrapRazorPages;
 
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using DataAccessDDO.DatabaseSettings;
-using DataAccessDDO.Repositories;
-using Microsoft.Extensions.Hosting;
-using LogicDDO.Services;
-using TestBootstrapRazorPages.AppService;
-
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -21,7 +13,7 @@ builder.Services.AddTransient<MySqlConnection>(
 );
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
