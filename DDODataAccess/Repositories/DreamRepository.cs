@@ -100,9 +100,9 @@ public class DreamRepository : LogicDDO.Services.DataAccessRepositoriesInterface
 
     public void CreateDream(DreamDTOLogic dream)
     {
-		DreamDTO dto = MapDreamDTOLogicToDreamDTO(dream);
+        DreamDTO dto = MapDreamDTOLogicToDreamDTO(dream);
 
-		using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
+        using MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
 
         connection.Open();
 
@@ -310,8 +310,11 @@ public class DreamRepository : LogicDDO.Services.DataAccessRepositoriesInterface
         {
             DreamId = dream.DreamId,
             DreamName = dream.DreamName,
-            DreamText = dream.DreamText
+            DreamText = dream.DreamText,
+            ReadableBy = dream.ReadableBy,
+            Tags = _tagRepository.MapTagDTOLogicsToTagDTOs(dream.Tags)
         };
+
         return dto;
     }
 

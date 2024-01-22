@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessDDO", "..\DDOData
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicDDO", "..\DDOLogic\LogicDDO.csproj", "{AD3BB862-B6DF-4176-AA06-C57579E0BF63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBootstrapRazorPages", "..\TestBootstrapRazorPages\TestBootstrapRazorPages.csproj", "{F24116E6-80D6-452C-9CF9-D96919D4086D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDOView", "..\TestBootstrapRazorPages\DDOView.csproj", "{F24116E6-80D6-452C-9CF9-D96919D4086D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DreamDiaryOnlineTesting", "..\DreamDiaryOnlineTesting\DreamDiaryOnlineTesting.csproj", "{A7862E1E-BD57-4E9E-B382-4A65D2E24F17}"
 EndProject

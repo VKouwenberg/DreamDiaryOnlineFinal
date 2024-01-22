@@ -45,8 +45,9 @@ public class DreamService : IDreamService
 
 	public void CreateDream(Dream dream)
 	{
-		DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
-		_dreamRepository.CreateDream(dreamDTO);
+        DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
+
+        _dreamRepository.CreateDream(dreamDTO);
 	}
 
 	public void DeleteDream(int id)
