@@ -10,16 +10,16 @@ using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class TagRepo : ITagRepository, ITagRepo
+public class TagRepository : LogicDDO.Services.DataAccessRepositoriesInterfaces.ITagRepository, DataAccessRepositoriesInterfaces.ITagRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly IRestRepo _restRepo;
+    private readonly DataAccessRepositoriesInterfaces.IRestRepository _restRepository;
 
-    public TagRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings, 
-        IRestRepo restRepo)
+    public TagRepository(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
+        DataAccessRepositoriesInterfaces.IRestRepository restRepository)
     {
         _databaseSettings = databaseSettings.Value;
-        _restRepo = restRepo;
+        _restRepository = restRepository;
     }
 
 	public int CreateTag(TagDTOLogic tag)
@@ -46,7 +46,7 @@ public class TagRepo : ITagRepository, ITagRepo
         MySqlConnection connection = new MySqlConnection(_databaseSettings.DefaultConnection);
         connection.Open();
 
-        _restRepo.DeleteRestByDreamId(dreamId);
+        _restRepository.DeleteRestByDreamId(dreamId);
 
         //things not linked in the database are apparently sometimes called orphans
         //remove the orphans. Kill the younglings

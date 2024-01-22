@@ -9,7 +9,7 @@ using LogicDDO.ModelsDataAccessDTOs;
 
 namespace DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
-public interface IRestRepo
+public interface IRestRepository
 {
 	void CreateRest(int tagId, int dreamId);
 	void DeleteRestByDreamId(int dreamId);

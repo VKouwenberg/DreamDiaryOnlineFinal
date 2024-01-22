@@ -10,11 +10,11 @@ using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class RestRepo : IRestRepository, IRestRepo
+public class RestRepository : LogicDDO.Services.DataAccessRepositoriesInterfaces.IRestRepository, DataAccessRepositoriesInterfaces.IRestRepository
 {
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
 
-    public RestRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings)
+    public RestRepository(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings)
     {
         _databaseSettings = databaseSettings.Value;
     }

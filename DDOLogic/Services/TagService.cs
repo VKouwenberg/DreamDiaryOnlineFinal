@@ -12,28 +12,28 @@ namespace LogicDDO.Services;
 
 public class TagService : ITagService
 {
-    private readonly ITagRepository _tagRepo;
+    private readonly ITagRepository _tagRepository;
 
-    public TagService(ITagRepository tagRepo)
+    public TagService(ITagRepository tagRepository)
     {
-        _tagRepo = tagRepo;
+        _tagRepository = tagRepository;
     }
 
 	public int CreateTag(Tag tag)
 	{
 		TagDTOLogic tagDTO = MapTagToTagDTOLogic(tag);
 
-		return _tagRepo.CreateTag(tagDTO);
+		return _tagRepository.CreateTag(tagDTO);
 	}
 
 	public void DeleteDreamTags(int dreamId)
 	{
-		_tagRepo.DeleteDreamTags(dreamId);
+		_tagRepository.DeleteDreamTags(dreamId);
 	}
 
 	public void DeleteTagsByDreamId(int dreamId)
 	{
-		_tagRepo.DeleteTagsByDreamId(dreamId);
+		_tagRepository.DeleteTagsByDreamId(dreamId);
 	}
 
 	//mapping

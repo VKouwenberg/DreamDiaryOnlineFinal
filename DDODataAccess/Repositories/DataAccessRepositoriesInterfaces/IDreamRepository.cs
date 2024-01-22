@@ -10,7 +10,7 @@ using LogicDDO.ModelsDataAccessDTOs;
 
 namespace DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
-public interface IDreamRepo
+public interface IDreamRepository
 {
 	List<DreamDTOLogic> GetAllDreams();
 	void CreateDream(DreamDTOLogic dream);

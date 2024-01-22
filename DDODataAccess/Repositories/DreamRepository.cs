@@ -11,23 +11,23 @@ using DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
 namespace DataAccessDDO.Repositories;
 
-public class DreamRepo : IDreamRepository, IDreamRepo
+public class DreamRepository : LogicDDO.Services.DataAccessRepositoriesInterfaces.IDreamRepository, DataAccessRepositoriesInterfaces.IDreamRepository
 {
     private readonly DatabaseContext _databaseContext;
 
     private readonly DatabaseSettings.DatabaseSettings _databaseSettings;
-    private readonly ITagRepo _tagRepo;
-    private readonly IRestRepo _restRepo;
+    private readonly DataAccessRepositoriesInterfaces.ITagRepository _tagRepository;
+    private readonly DataAccessRepositoriesInterfaces.IRestRepository _restRepository;
 
-    public DreamRepo(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
-        ITagRepo tagRepo,
-        IRestRepo restRepo)
+    public DreamRepository(IOptions<DatabaseSettings.DatabaseSettings> databaseSettings,
+        DataAccessRepositoriesInterfaces.ITagRepository tagRepository,
+        DataAccessRepositoriesInterfaces.IRestRepository restRepository)
     {
         _databaseContext = new DatabaseContext();
 
 		_databaseSettings = databaseSettings.Value;
-        _tagRepo = tagRepo;
-        _restRepo = restRepo;
+        _tagRepository = tagRepository;
+        _restRepository = restRepository;
     }
 
     public List<DreamDTOLogic> GetAllDreams()
@@ -199,7 +199,7 @@ public class DreamRepo : IDreamRepository, IDreamRepo
         UpdateDreamCommand.ExecuteNonQuery();
 
         //removes all existing tags with this id
-        _tagRepo.DeleteDreamTags(dto.DreamId);
+        _tagRepository.DeleteDreamTags(dto.DreamId);
 
 
         //add new tags
@@ -211,16 +211,16 @@ public class DreamRepo : IDreamRepository, IDreamRepo
                 {
 					//create the tag itself
                     TagDTOLogic tagDTOLogic = new TagDTOLogic();
-                    tagDTOLogic = _tagRepo.MapTagDTOToTagDTOLogic(tag);
+                    tagDTOLogic = _tagRepository.MapTagDTOToTagDTOLogic(tag);
 
-					int newTagId = _tagRepo.CreateTag(tagDTOLogic);
+					int newTagId = _tagRepository.CreateTag(tagDTOLogic);
 
 					//link the tag and the dreamId in a new rest
-					_restRepo.CreateRest(newTagId, dto.DreamId);
+					_restRepository.CreateRest(newTagId, dto.DreamId);
 				}
                 else
                 {
-                    _restRepo.DeleteRestByTagIdAndDreamId(tag.TagId, dto.DreamId);
+                    _restRepository.DeleteRestByTagIdAndDreamId(tag.TagId, dto.DreamId);
                 }
             }
         }
@@ -234,9 +234,9 @@ public class DreamRepo : IDreamRepository, IDreamRepo
 
         connection.Open();
 
-        _restRepo.DeleteRestByDreamId(dreamId);
+        _restRepository.DeleteRestByDreamId(dreamId);
 
-        _tagRepo.DeleteTagsByDreamId(dreamId);
+        _tagRepository.DeleteTagsByDreamId(dreamId);
 
         string deleteDreamQuery = "DELETE FROM Dream WHERE DreamId = @DreamId";
         using MySqlCommand deleteDreamCommand = new MySqlCommand(deleteDreamQuery, connection);
@@ -334,7 +334,7 @@ public class DreamRepo : IDreamRepository, IDreamRepo
             DreamName = dto.DreamName,
             DreamText = dto.DreamText,
             ReadableBy = dto.ReadableBy,
-            Tags = _tagRepo.MapTagDTOsToTagDTOLogics(dto.Tags)
+            Tags = _tagRepository.MapTagDTOsToTagDTOLogics(dto.Tags)
         };
         return dream;
     }

@@ -29,14 +29,14 @@ public static class ServiceExtensions
 		services.AddScoped<ITagService, TagService>();
 
 		//register DataAccess repositories
-		services.AddScoped<IDreamRepository, DreamRepo>();
-		services.AddScoped<IRestRepository, RestRepo>();
-		services.AddScoped<ITagRepository, TagRepo>();
+		services.AddScoped<LogicDDO.Services.DataAccessRepositoriesInterfaces.IDreamRepository, DreamRepository>();
+		services.AddScoped<LogicDDO.Services.DataAccessRepositoriesInterfaces.IRestRepository, RestRepository>();
+		services.AddScoped<LogicDDO.Services.DataAccessRepositoriesInterfaces.ITagRepository, TagRepository>();
 
 		//register DataAccess repository interfaces
-		services.AddScoped<IDreamRepo, DreamRepo>();
-		services.AddScoped<IRestRepo, RestRepo>();
-		services.AddScoped<ITagRepo, TagRepo>();
+		services.AddScoped<DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces.IDreamRepository, DreamRepository>();
+		services.AddScoped<DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces.IRestRepository, RestRepository>();
+		services.AddScoped<DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces.ITagRepository, TagRepository>();
 
 
 

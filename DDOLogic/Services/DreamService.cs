@@ -12,12 +12,12 @@ namespace LogicDDO.Services;
 
 public class DreamService : IDreamService
 {
-	private readonly IDreamRepository _dreamRepo;
+	private readonly IDreamRepository _dreamRepository;
 	private readonly ITagService _tagService;
 
-	public DreamService(IDreamRepository dreamRepo, ITagService tagService)
+	public DreamService(IDreamRepository dreamRepository, ITagService tagService)
 	{
-		_dreamRepo = dreamRepo;
+		_dreamRepository = dreamRepository;
 		_tagService = tagService;
 	}
 
@@ -26,7 +26,7 @@ public class DreamService : IDreamService
 		List<Dream> dreams = new List<Dream>();
 		List<DreamDTOLogic> dreamDTOs = new List<DreamDTOLogic>();
 
-		dreamDTOs = _dreamRepo.GetAllDreams();
+		dreamDTOs = _dreamRepository.GetAllDreams();
 		dreams = MapDreamDTOLogicsToDreams(dreamDTOs);
 
 		return dreams;
@@ -37,7 +37,7 @@ public class DreamService : IDreamService
 		Dream dream = new Dream();
 		DreamDTOLogic dreamDTO = new DreamDTOLogic();
 
-		dreamDTO = _dreamRepo.GetDreamById(id);
+		dreamDTO = _dreamRepository.GetDreamById(id);
 		dream = MapDreamDTOLogicToDream(dreamDTO);
 
 		return dream;
@@ -46,18 +46,18 @@ public class DreamService : IDreamService
 	public void CreateDream(Dream dream)
 	{
 		DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
-		_dreamRepo.CreateDream(dreamDTO);
+		_dreamRepository.CreateDream(dreamDTO);
 	}
 
 	public void DeleteDream(int id)
 	{
-		_dreamRepo.DeleteDream(id);
+		_dreamRepository.DeleteDream(id);
 	}
 
 	public void UpdateDream(Dream dream)
 	{
 		DreamDTOLogic dreamDTO = MapDreamToDreamDTOLogic(dream);
-		_dreamRepo.UpdateDream(dreamDTO);
+		_dreamRepository.UpdateDream(dreamDTO);
 	}
 
 	//mapping logic

@@ -10,7 +10,7 @@ using LogicDDO.ModelsDataAccessDTOs;
 
 namespace DataAccessDDO.Repositories.DataAccessRepositoriesInterfaces;
 
-public interface ITagRepo
+public interface ITagRepository
 {
 	int CreateTag(TagDTOLogic tag);
 	void DeleteDreamTags(int dreamId);

@@ -12,26 +12,26 @@ namespace LogicDDO.Services;
 
 public class RestService : IRestService
 {
-    private readonly IRestRepository _restRepo;
+    private readonly IRestRepository _restRepository;
 
     public RestService(IRestRepository restRepo)
     {
-        _restRepo = restRepo;
+        _restRepository = restRepo;
     }
 
 	public void CreateRest(int tagId, int dreamId)
 	{
-		_restRepo.CreateRest(tagId, dreamId);
+		_restRepository.CreateRest(tagId, dreamId);
 	}
 
 	public void DeleteRestByDreamId(int dreamId)
 	{
-		_restRepo.DeleteRestByDreamId(dreamId);
+		_restRepository.DeleteRestByDreamId(dreamId);
 	}
 
 	public void DeleteRestByTagIdAndDreamId(int tagId, int dreamId)
 	{
-		_restRepo.DeleteRestByTagIdAndDreamId(tagId, dreamId);
+		_restRepository.DeleteRestByTagIdAndDreamId(tagId, dreamId);
 	}
 
 	/*public Rest MapDTOLogicTagToTag(RestDTOLogic tagDTO)
